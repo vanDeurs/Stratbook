@@ -39,14 +39,14 @@ class App extends Component {
 
   render(){
     return(
-        <HashRouter>
+        <BrowserRouter>
             <Switch>
                 <Route exact path='/' component={Home}/>
                 <Route exact path='/:map' component={RenderMap}/>
                 <Route exact path='/:map/strategies' component={RenderStrategies}/>
                 <Route exact path='/:map/setups' component={RenderSetups}/>
             </Switch>
-        </HashRouter>
+        </BrowserRouter>
     )
   }
 }
