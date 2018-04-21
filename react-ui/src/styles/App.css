@@ -1,0 +1,18 @@
+
+/* 
+This is the container for the landing page. 
+I can't access the index.css file from Home.js, however I can access this file for some reason. That is why I have a seperate file for this. 
+*/
+
+.container{
+  font-size: 25px;
+  height: 100vh;
+  margin: 0;
+  background-image: url('../images/background.jpg');
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}

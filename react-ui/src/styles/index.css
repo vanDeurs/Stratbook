@@ -1,0 +1,473 @@
+
+/* 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+IMPORTS
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+  @import url('https://fonts.googleapis.com/css?family=Raleway');
+
+/* 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+GLOBAL STUFF
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    height: 100%;
+    width: 100%;
+  }
+
+  h1, h2, h3, h4, h5, p, {
+    font-family: 'Raleway', sans-serif;
+  }
+
+/* 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+MAIN CONTAINER FOR THE LANDING PAGE
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+.container{
+    font-size: 25px;
+    height: 100vh;
+    margin: 0;
+    background-image: url('../images/background.jpg');
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+/* 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+STYLING FOR THE MAPCARDS (ON THE LANDING PAGE)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+.cardContainer{
+  height: 35%;
+  width: 20%; 
+  /* background: #fff; */
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-origin: border-box;
+  -webkit-box-shadow: 0px 0px 28px 14px rgba(0,0,0,0.57);
+  -moz-box-shadow: 0px 0px 28px 14px rgba(0,0,0,0.57);
+  box-shadow: 0px 0px 28px 14px rgba(0,0,0,0.57);
+}
+
+.overlayContainer {
+  height: 100%;
+  width: 100%;
+  background: transparent;
+  border-radius: 12px;
+  transition: .5s ease;
+  position: relative;
+  /* border: 1px solid red; */
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlayContainer:hover {
+  background: rgba(16, 33, 58, 0.75);
+}
+
+.overlayContainer:hover > #mapName{
+  color: rgba(250,250,250,.8);
+}
+
+#mapName {
+  font-size: 40px;
+  transition: .5s ease;
+  color: transparent;
+  text-decoration: none;
+  transition: .5s ease;
+  font-family: 'Raleway', sans-serif;
+  text-transform: uppercase;
+}
+#mapName:after {
+  display:block;
+  content: '';
+  border-top: solid 5px rgba(250, 250, 250, .6);
+  transform: scaleX(0);  
+  transition: transform 300ms ease-in-out;
+  transform-origin:100% 0%
+}
+#mapName:hover:after { 
+  transform: scaleX(1);
+  transform-origin:0% 100%;
+  border-color: rgba(250, 250, 250, 1);
+}
+
+
+/* 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+STYLING FOR THE STRATEGIES PAGE (not it's components, just the container and stuff)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+.strategiesContainer {
+    height: 100%;
+    width: 100%;
+    background: #0fbcf9;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin: 0;
+}
+
+/* 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+STYLING FOR THE MIDDLEPICKER
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+.middleContainer {
+    height: 100vh;
+    width: 100vw;
+    background-size: cover;
+    background-position: center;
+}
+.innerContainer {
+    height: 100vh;
+    width: 100vw;
+    background: rgba(30,30,30,0.85);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.strategiButton {
+    width: 30%;
+    height: 20%;
+    background: #FF6A11;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-box-shadow: 0px 0px 28px 14px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 0px 28px 14px rgba(0,0,0,0.57);
+    box-shadow: 0px 0px 28px 14px rgba(0,0,0,0.57);
+    text-decoration-line: none;
+    transition: 0.25s ease;
+    flex-direction: row;
+}
+.setupButton {
+    width: 30%;
+    height: 20%;
+    background: #0C0DAD;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-box-shadow: 0px 0px 28px 14px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 0px 28px 14px rgba(0,0,0,0.57);
+    box-shadow: 0px 0px 28px 14px rgba(0,0,0,0.57);
+    text-decoration-line: none;
+    transition: 0.25s ease;
+}
+
+.buttonText {
+    font-size: 40px;
+    color: #eee;
+    text-decoration-line: none;
+    padding: 20px 10px;
+    border-top: 8px solid #fff;
+    border-bottom: 8px solid #fff;
+    transition: 0.25s ease;
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+}
+
+.buttonText:hover {
+    border-right: 8px solid #fff;
+    border-left: 8px solid #fff;
+    border-top: 8px solid #fff;
+    border-bottom: 8px solid #fff;
+    border-radius: 15px;
+}
+
+.strategiButton:hover {
+    -webkit-box-shadow: 0px 0px 14px 10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 0px 14px 10px rgba(0,0,0,0.57);
+}
+
+.setupButton:hover {
+    -webkit-box-shadow: 0px 0px 14px 10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 0px 14px 10px rgba(0,0,0,0.57);
+}
+
+.strategiButton .buttonText:hover {
+    background-color: #fff;
+    color: #FF6A11;
+}
+
+.setupButton .buttonText:hover {
+    background-color: #fff;
+    color: #0C0DAD;
+}
+
+.arrow {
+    cursor: pointer;
+    height: 70%;
+    left:20%;
+    position: relative;
+    top: 35%;
+    transform: translateX(-50%) translateY(-50%);
+    transition: transform .1s;
+    width: 20%;
+    /* border: 1px solid white; */
+  }
+  .arrow-top, .arrow-bottom {
+    background-color: #666;
+    height: 4px;
+    left: -5px;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+  }
+  .arrow-top:after, .arrow-bottom:after {
+    background-color: #fff;
+    content: '';
+    height: 100%;
+    position: absolute;
+    top: 0;
+    transition: all 0.15s;
+  }
+  .arrow-top {
+    transform: rotate(45deg);
+    transform-origin: bottom right;
+  }
+  .arrow-top:after {
+    left: 100%;
+    right: 0;
+    transition-delay: 0s;
+  }
+  .arrow-bottom {
+    transform: rotate(-45deg);
+    transform-origin: top right;
+  }
+  .arrow-bottom:after {
+    left: 0;
+    right: 100%;
+    transition-delay: 0.15s;
+  }
+  .arrow:hover .arrow-top:after {
+    left: 0;
+    transition-delay: 0.15s;
+  }
+  .arrow:hover .arrow-bottom:after {
+    right: 0;
+    transition-delay: 0s;
+  }
+  .arrow:active {
+    transform: translateX(-50%) translateY(-50%) scale(0.9);
+  }
+
+
+/* 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+STYLING FOR THE STRATEGY CARD
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+.strategyCardContainer {
+    height: 22.5vh;
+    width: 50vw;
+    min-width: 900px;
+    background: rgba(255, 255, 255, 1);
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 2vh 3vw;
+}
+
+h1 {
+    font-size: 35px;
+    color: #333;
+}
+
+h2 {
+    font-size: 25px;
+    color: #333;
+}
+
+/* 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+STYLING FOR TOP TABLE COMPONENT
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+.tableContainer {
+    height: 22.5vh;
+    width: 50vw;
+    min-width: 900px;
+    background: rgba(255, 255, 255, 1);
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 2vh 3vw;
+    display: flex;
+    flex-direction: row;
+}
+
+/* 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+STYLING FOR ADD STRATEGY BUTTON
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+.addButton {
+  height: 70px;
+  width: 70px;
+  border-radius: 50px;
+  background-color: white;
+  border: 1px solid #0fbcf9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration-line: none;
+  transition: 0.35s ease;
+}
+
+.addStrategyButtonText {
+  /* font-size: 50px; */
+  font-weight: 400;
+  color: #0fbcf9;
+  text-decoration-line: none;
+  transition: 0.35s ease;
+}
+
+.addButton:hover  {
+  background-color: #0fbcf9;
+  cursor: pointer;
+}
+
+.addButton:focus {
+  outline: none;
+}
+
+.addButton:hover > .addStrategyButtonText {
+  color: white;
+}
+
+/* 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+STYLING FOR CLEAR FILTERS BUTTON
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+.clearFiltersButton {
+  /* padding: 5px 10px; */
+  background: white;
+  border: 1px solid #0be881;
+  border-radius: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+  width: 15%;
+  transition: 0.35s ease;
+}
+
+.clearFiltersButton:hover {
+  cursor: pointer;
+  background: #0be881;
+}
+
+.clearFiltersButtonText {
+  font-size: 19px;
+  color: #0be881;
+  letter-spacing: 1px;
+  transition: 0.35s ease;
+}
+
+.clearFiltersButton:hover > .clearFiltersButtonText {
+  color: white;
+}
+
+/* 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+STYLING FOR FILTER TYPE 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+.filterTypeContainer {
+  border: 1px solid grey;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 25%;
+  height: 20%;
+}
+
+.filterTypeText {
+  font-size: 19px;
+  color: grey;
+}
+
+/* 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+STYLING FOR FILTER BUTTON 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+.filterButton {
+  width: 15%;
+  height: 20%;
+  border: 1px solid #808e9b;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.filterButtonText {
+  font-size: 19px;
+  color: #808e9b;
+}
+
+
+
+
+
+
+
