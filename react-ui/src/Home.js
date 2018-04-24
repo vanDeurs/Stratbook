@@ -36,7 +36,7 @@ export class Home extends Component {
 
     // Returns a container with all the map components.
     return ( 
-      <div className="container"> 
+      <div className="homeContainer"> 
         {renderMapCards()}
       </div>
     );

@@ -1,5 +1,4 @@
 import React, { Component }     from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
 
 // Images
 import miragehd         from '../images/hd/miragehd.jpg';
@@ -11,16 +10,6 @@ import overpasshd       from '../images/hd/overpasshd.png';
 import cobblestonehd    from '../images/hd/cobblestonehd.jpg';
 import dust2hd          from '../images/hd/dust2hd.png';
 
-import index            from '../index';
-
-import {MiddlePicker}   from '../containers/MiddlePicker';
-
-
-import Home             from '../Home'
-
-import ReactDOM         from 'react-dom';
-import { Link }         from 'react-router-dom';
-import {App}            from '../index';
 import { MapSetups } from '../containers/MapSetups';
 
 
@@ -33,7 +22,7 @@ export const RenderSetups = ({location}) => {
     let mapImages = [trainhd, cachehd, overpasshd, miragehd, nukehd, cobblestonehd, infernohd, dust2hd];
 
     for(let i = 0; i < maps.length; i++ ){
-        if (pathName == '/' + maps[i] + '/setups'){
+        if (pathName === '/' + maps[i] + '/setups'){
             return (
                 <MapSetups map={maps[i]}/>
             )

@@ -22,7 +22,7 @@ import Home             from '../Home'
 import ReactDOM         from 'react-dom';
 import { Link }         from 'react-router-dom';
 import {App}            from '../index';
-import { MapStrategies } from '../containers/MapStrategies';
+import { DisplayStrategies } from '../containers/DisplayStrategies';
 
 
 // // Stateless Component Function
@@ -37,7 +37,7 @@ export const RenderStrategies = ({location}) => {
     for(let i = 0; i < maps.length; i++ ){
         if (pathName == '/' + maps[i] + '/strategies'){
             return (
-                <MapStrategies map={maps[i]}/>
+                <DisplayStrategies map={maps[i]}/>
             )
         }
     }

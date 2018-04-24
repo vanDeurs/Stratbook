@@ -17,7 +17,7 @@ import dust2hd          from '../images/hd/dust2hd.png';
 import index            from '../index';
 
 import {MiddlePicker}   from '../containers/MiddlePicker';
-import {TopTable} from '../components/TopTable';
+import {TopTable} from '../components/DisplayStrategiesComponents/TopTable';
 
 
 import Home             from '../Home'
@@ -26,20 +26,41 @@ import Home             from '../Home'
 import ReactDOM         from 'react-dom';
 import { Link }         from 'react-router-dom';
 import {App}            from '../index';
-import { StrategyCard } from '../components/StrategyCard';
+import { StrategyCard } from '../components/DisplayStrategiesComponents/StrategyCard';
 
+let fakeServerData = {
+  user: {
+    name: 'David',
+    strategies: [
+      {map: 'Mirage', name: 'A-split'},
+      {map: 'Cache', name: 'B-rush'},
+      {map: 'Train', name: 'Pop-attack'},
+      {map: 'Inferno', name: 'Molotov-strat'},
+      {map: 'Nuke', name: 'Hut-rush'},
+    ],
+    setups: [
+      {},
+      {},
+      {},
+    ]
+  }
+}
 
-export class MapStrategies extends Component {
+export class DisplayStrategies extends Component {
     constructor(props){
-        super(props)
+        super(props);
         this.state = {
             currentMap: null,
-            strategies: [1, 2, 3, 4, 5],
+            serverData: {},
         }
     }
 
+
     componentDidMount(){
         this.getMapPick()
+        this.setState({ // Fake loading with setTimeout
+          serverData: fakeServerData
+        })
     }
 
     getMapPick = () => {
@@ -49,7 +70,7 @@ export class MapStrategies extends Component {
             text = "Train is good!";
               break;
             case "cache":
-            text = `I am not a fan of ${this.props.map}.`; // We should run a fetch function to get the strategies/setups from the Mongo DB.
+            text = `I am not a fan of ${this.props.map}.`; // We should run a fetch function to get the strategies/setups from a server!
               break;
             case "overpass":
             text = `I am not a fan of ${this.props.map}.`; // Todo: Do this but with the setups.
@@ -82,17 +103,21 @@ export class MapStrategies extends Component {
 
       // Render the strategy cards. Map through the array of strategys.
       let renderStrategyCards = () => {
-        const {strategies} = this.state
-        return strategies
+        const {serverData} = this.state
+        return serverData && serverData.user && serverData.user.strategies
             .map((strategy, index) => {
-                return <StrategyCard mapName={this.state.currentMap} key={index} strategyName={'Strategy' + index} strategySummary="Strategy summary whoho"/>
+                return <StrategyCard mapName={serverData.user.strategies[index].map} key={index} strategyName={serverData.user.strategies[index].name} strategySummary="Strategy summary whoho"/>
             })
       }
 
         return(
             <div className="strategiesContainer">
-              <TopTable currentMap={this.state.currentMap}/>
-              {renderStrategyCards()}
+              <div className="top">
+                <TopTable currentMap={this.state.currentMap}/>
+              </div>
+              <div className="bottom">
+                {renderStrategyCards()}
+              </div>
             </div>
         )
     }

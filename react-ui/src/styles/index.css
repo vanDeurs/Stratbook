@@ -28,6 +28,54 @@ body {
     font-family: 'Raleway', sans-serif;
   }
 
+
+  .fullContainer {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+  }
+
+/* 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+HEADER
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+.headerContainer {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  /* position: absolute;
+  top: 0; */
+  /* min-width: 100vw; */
+  height: 60px;
+  background: lightblue;
+}
+
+/* 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+FOOTER
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+.footerContainer {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  /* position: absolute;
+  top: 0; */
+  /* min-width: 100vw; */
+  height: 60px;
+  background: lightcoral;
+}
+
 /* 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -35,7 +83,7 @@ MAIN CONTAINER FOR THE LANDING PAGE
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 */
-.container{
+.homeContainer{
     font-size: 25px;
     height: 100vh;
     margin: 0;
@@ -129,15 +177,15 @@ STYLING FOR THE STRATEGIES PAGE (not it's components, just the container and stu
 
 .strategiesContainer {
     height: 100%;
+    min-height: 100vh;
     width: 100%;
     background: #0fbcf9;
     padding-top: 2%;
     padding-bottom: 2%;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
     margin: 0;
 }
 
@@ -301,13 +349,13 @@ STYLING FOR THE STRATEGY CARD
 */
 
 .strategyCardContainer {
-    height: 22.5vh;
-    width: 50vw;
+    height: 26.5vh;
+    width: 56vw;
     min-width: 900px;
     background: rgba(255, 255, 255, 1);
     border: 1px solid #ccc;
     border-radius: 2px;
-    padding: 2vh 3vw;
+    /* padding: 2vh 3vw; */
 }
 
 h1 {
@@ -329,16 +377,48 @@ STYLING FOR TOP TABLE COMPONENT
 */
 
 .tableContainer {
-    height: 22.5vh;
-    width: 50vw;
+    height: 26.5vh;
+    width: 56vw;
     min-width: 900px;
     background: rgba(255, 255, 255, 1);
     border: 1px solid #ccc;
     border-radius: 2px;
-    padding: 2vh 3vw;
+    /* padding: 2vh 3vw; */
     display: flex;
     flex-direction: row;
 }
+
+.topTableLeft {
+  height: 100%;
+  width: 25%;
+  /* border: 1px solid violet; */
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content:space-around;
+}
+
+.topTableMiddle {
+  height: 100%;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+  /* border: 1px solid violet; */
+}
+
+.topTableRight {
+  height: 100%;
+  width: 25%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content:space-around;
+  /* border: 1px solid violet; */
+}
+
+
 
 /* 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -351,7 +431,7 @@ STYLING FOR ADD STRATEGY BUTTON
 .addButton {
   height: 70px;
   width: 70px;
-  border-radius: 50px;
+  border-radius: 70px;
   background-color: white;
   border: 1px solid #0fbcf9;
   display: flex;
@@ -359,6 +439,8 @@ STYLING FOR ADD STRATEGY BUTTON
   align-items: center;
   text-decoration-line: none;
   transition: 0.35s ease;
+  /* position: absolute;
+  top: 13%; */
 }
 
 .addStrategyButtonText {
@@ -394,13 +476,14 @@ STYLING FOR CLEAR FILTERS BUTTON
   /* padding: 5px 10px; */
   background: white;
   border: 1px solid #0be881;
-  border-radius: 3px;
+  border-radius: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 20%;
-  width: 15%;
+  height: 17.5%;
+  width: 30%;
   transition: 0.35s ease;
+  /* align-self: ce */
 }
 
 .clearFiltersButton:hover {
@@ -428,17 +511,21 @@ STYLING FOR FILTER TYPE
 */
 
 .filterTypeContainer {
-  border: 1px solid grey;
+  border-bottom-width: 1px;
+  border-color: grey;
+  border-bottom-style: solid;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
-  width: 25%;
+  width: 90%;
+  flex-wrap: wrap;
   height: 20%;
+  margin-block-end: 2%;
 }
 
 .filterTypeText {
-  font-size: 19px;
+  font-size: 17px;
   color: grey;
 }
 
@@ -451,7 +538,7 @@ STYLING FOR FILTER BUTTON
 */
 
 .filterButton {
-  width: 15%;
+  width: 75%;
   height: 20%;
   border: 1px solid #808e9b;
   border-radius: 5px;
@@ -463,6 +550,44 @@ STYLING FOR FILTER BUTTON
 .filterButtonText {
   font-size: 19px;
   color: #808e9b;
+}
+
+/* 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+STYLING FOR SORT BUTTON 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+.sortButton {
+  width: 75%;
+  height: 20%;
+  border: 1px solid #808e9b;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sortButton {
+  font-size: 19px;
+  color: #808e9b;
+}
+
+/* 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+STYLING FOR SEARCH BAR 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+.searchBar {
+  width: 75%;
+  height: 17.5%;
+  border-radius: 5px;
+  border: 1px solid #0fbcf9;
 }
 
 

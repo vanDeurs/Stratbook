@@ -1,5 +1,4 @@
 import React, { Component }     from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
 
 // Images
 import miragehd         from '../images/hd/miragehd.jpg';
@@ -11,17 +10,7 @@ import overpasshd       from '../images/hd/overpasshd.png';
 import cobblestonehd    from '../images/hd/cobblestonehd.jpg';
 import dust2hd          from '../images/hd/dust2hd.png';
 
-import index            from '../index';
-
 import {MiddlePicker}   from '../containers/MiddlePicker';
-
-
-import Home             from '../Home'
-
-import ReactDOM         from 'react-dom';
-import { Link }         from 'react-router-dom';
-import {App}            from '../index';
-
 
 // Stateless Component Function
 // Checks if the url contains the map name, and then returns 
@@ -36,8 +25,8 @@ export const RenderMap = ({location}) => {
             return (
                 <MiddlePicker 
                 backgroundImage = {mapImages[i]}
-                linkStrategies={ maps[i] + '/strategies'}
-                linkSetups={ maps[i] + '/setups'}
+                linkStrategies={maps[i] + '/strategies'}
+                linkSetups={maps[i] + '/setups'}
                 />
             )
         }

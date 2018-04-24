@@ -1,12 +1,11 @@
 import React, { Component }     from 'react';
 
 import ReactDOM         from 'react-dom';
-import {App}            from '../index';
+import {App}            from '../../index';
+import '../../styles/index.css';
 
-import '../styles/index.css';
 
-
-export class FilterDisplay extends Component {
+export class SortButton extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -19,12 +18,12 @@ export class FilterDisplay extends Component {
     render(){
 
         const {
-            filter
+            something
         } = this.props
 
         return(
-            <div className="filterTypeContainer">
-                <p className="filterTypeText">{`Filter: ${this.props.filter}`}</p>
+            <div className="sortButton">
+                <p className="sortbutton">Sort</p>
             </div>
         )
     }

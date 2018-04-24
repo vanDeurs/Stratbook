@@ -2,13 +2,14 @@ import React, { Component }     from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import ReactDOM         from 'react-dom';
-import {App}            from '../index';
-// import '../styles/Toptable.css';
-import '../styles/index.css';
+import {App}            from '../../index';
+import '../../styles/index.css';
 import { AddStrategyButton } from './AddStrategyButton';
 import { ClearFilterButton } from './ClearFilterButton';
 import { FilterDisplay } from './FilterDisplay';
 import { FilterButton } from './FilterButton';
+import { SearchBar } from './SearchBar';
+import { SortButton } from './SortButton';
 
 export class TopTable extends Component {
     constructor(props){
@@ -24,11 +25,18 @@ export class TopTable extends Component {
 
         return(
             <div className="tableContainer">
-                <h1>{this.props.currentMap}</h1>
-                <AddStrategyButton />
-                <ClearFilterButton />
-                <FilterDisplay filter="Mirage"/>
-                <FilterButton />
+                <div className="topTableLeft"> 
+                    <AddStrategyButton />
+                    <FilterDisplay filter="Mirage"/>
+                </div>
+                <div className="topTableMiddle"> 
+                    <SearchBar />
+                    <ClearFilterButton />
+                </div>
+                <div className="topTableRight"> 
+                    <FilterButton />
+                    <SortButton />
+                </div>
             </div>
         )
     }
