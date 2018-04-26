@@ -18,7 +18,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.forceUpdate()
+    // this.forceUpdate()
     fetch('/api')
       .then(response => {
         if (!response.ok) {
