@@ -13,9 +13,9 @@ export class Footer extends Component {
     }
     render(){
         return(
-            <div className='footerContainer'>
-                <h2>footer</h2>
-            </div>
+            <div className="footerContainer">
+                <p className="footerText">Handmade by me - Alexander Wilson van Deurs © </p> 
+            </div>  
         )
     }
 }
