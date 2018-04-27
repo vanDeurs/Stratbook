@@ -1,3 +1,6 @@
+import apiRouter from './api';
+import testData from '../src/data';
+
 const express = require('express');
 const path = require('path');
 const cluster = require('cluster');
@@ -24,10 +27,17 @@ if (cluster.isMaster) {
   // Priority serve any static files.
   app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
+  // Router
+  // app.use('/data', apiRouter)
+  app.get('/data', (req, res) => {
+    console.log("Hello")
+    res.send({ maps: testData.user })
+});
+
   // Answer API requests.
   app.get('/api', function (req, res) {
     res.set('Content-Type', 'application/json');
-    res.send('{"message":"Hello from the custom server!"}');
+    res.send('{"message":"Hello from the custom server! xxxxxx"}');
   });
 
   // All remaining requests return the React app, so it can handle routing.
