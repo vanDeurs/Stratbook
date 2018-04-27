@@ -15,6 +15,7 @@
   ],
   "dependencies": {
     "express": "^4.14.1",
+    "fs": "0.0.1-security",
     "nodemon": "^1.17.3",
     "prop-types": "^15.6.1",
     "react-dom": "^16.3.2",

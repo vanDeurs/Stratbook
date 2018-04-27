@@ -3,7 +3,8 @@ const testData = require('../../src/data/testData.json');
 const router = express.Router()
 
 router.get('/', (req, res, next) => {
-    res.send(testData.user.strategies)
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(testData.user.strategies))
   });
 
 module.exports = router;
