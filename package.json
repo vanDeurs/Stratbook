@@ -26,7 +26,6 @@
     "type": "git",
     "url": "https://github.com/vanDeurs/stratbook"
   },
-  "proxy": "http://localhost:5000",
   "keywords": [
     "node",
     "heroku",
