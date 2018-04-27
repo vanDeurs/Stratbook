@@ -6,7 +6,7 @@
     "node": "8.9.x"
   },
   "scripts": {
-    "start": "node server",
+    "start": "nodemon server",
     "heroku-postbuild": "cd react-ui/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "cacheDirectories": [
@@ -15,6 +15,7 @@
   ],
   "dependencies": {
     "express": "^4.14.1",
+    "nodemon": "^1.17.3",
     "prop-types": "^15.6.1",
     "react-dom": "^16.3.2",
     "react-materialize": "^2.2.0",
@@ -24,6 +25,7 @@
     "type": "git",
     "url": "https://github.com/vanDeurs/stratbook"
   },
+  "proxy": "http://localhost:5000",
   "keywords": [
     "node",
     "heroku",

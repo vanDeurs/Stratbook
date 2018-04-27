@@ -14,7 +14,7 @@ import overpasshd       from '../images/hd/overpasshd.png';
 import cobblestonehd    from '../images/hd/cobblestonehd.jpg';
 import dust2hd          from '../images/hd/dust2hd.png';
 
-import index            from '../index';
+// import {index}            from '../index';
 
 import {MiddlePicker}   from '../containers/MiddlePicker';
 import {TopTable} from '../components/DisplayStrategiesComponents/TopTable';
@@ -27,96 +27,62 @@ import ReactDOM         from 'react-dom';
 import { Link }         from 'react-router-dom';
 import {App}            from '../index';
 import { StrategyCard } from '../components/DisplayStrategiesComponents/StrategyCard';
-
-let fakeServerData = {
-  user: {
-    name: 'David',
-    strategies: [
-      {map: 'Mirage', name: 'A-split'},
-      {map: 'Cache', name: 'B-rush'},
-      {map: 'Train', name: 'Pop-attack'},
-      {map: 'Inferno', name: 'Molotov-strat'},
-      {map: 'Nuke', name: 'Hut-rush'},
-    ],
-    setups: [
-      {},
-      {},
-      {},
-    ]
-  }
-}
+import { error } from 'util';
 
 export class DisplayStrategies extends Component {
     constructor(props){
         super(props);
         this.state = {
             currentMap: null,
-            serverData: {},
+            strategies: [],
+            loading: true,
         }
     }
 
 
     componentDidMount(){
-        this.getMapPick()
-        this.setState({ // Fake loading with setTimeout
-          serverData: fakeServerData
+        this.fetchStrategies();
+    };
+
+    // We fetch the data from the API
+    fetchStrategies = () => {
+      fetch('/:map/strategies')
+      .then(res => res.json())
+        .catch(console.log(error))
+          .then(strategies => this.setState({strategies, loading: false}, () => {
+      })
+    ).catch(console.log(error))
+  }
+
+  // This function goes through the data that is stored in the state.
+  // And then returns a card component for each strategy
+  renderStrategyCards = () => {
+    const {strategies} = this.state
+    return strategies
+        .map((strategy, index) => {
+            return (
+              <StrategyCard 
+                mapName={strategies[index].map} 
+                strategyName={strategies[index].name}  
+                key={index} 
+                strategySummary={strategies[index].summary}
+              />
+            )
         })
-    }
+  }
 
-    getMapPick = () => {
-        let text;
-        switch(this.props.map) {
-            case "train":
-            text = "Train is good!";
-              break;
-            case "cache":
-            text = `I am not a fan of ${this.props.map}.`; // We should run a fetch function to get the strategies/setups from a server!
-              break;
-            case "overpass":
-            text = `I am not a fan of ${this.props.map}.`; // Todo: Do this but with the setups.
-              break;
-            case "mirage":
-            text = `I am not a fan of ${this.props.map}.`;
-              break;
-            case "nuke":
-            text = `I am not a fan of ${this.props.map}.`;
-              break;
-            case "cobblestone":
-            text = `I am not a fan of ${this.props.map}.`;
-              break;
-            case "inferno":
-            text = `I am not a fan of ${this.props.map}.`;
-              break;
-            case "dust2":
-            text = `I am not a fan of ${this.props.map}.`;
-              break;
-            // Default
-            text = 'Map';
-          }
-          this.setState({
-              currentMap: this.props.map
-          })
-    }
     render(){
-
-
-
-      // Render the strategy cards. Map through the array of strategys.
-      let renderStrategyCards = () => {
-        const {serverData} = this.state
-        return serverData && serverData.user && serverData.user.strategies
-            .map((strategy, index) => {
-                return <StrategyCard mapName={serverData.user.strategies[index].map} key={index} strategyName={serverData.user.strategies[index].name} strategySummary="Strategy summary whoho"/>
-            })
-      }
-
         return(
             <div className="strategiesContainer">
               <div className="top">
                 <TopTable currentMap={this.state.currentMap}/>
               </div>
               <div className="bottom">
-                {renderStrategyCards()}
+              {
+                this.state.loading 
+                ? <h1>Loading..</h1>
+                : this.renderStrategyCards()
+              }
               </div>
             </div>
         )
