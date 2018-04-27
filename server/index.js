@@ -30,7 +30,7 @@ if (cluster.isMaster) {
   // Router
   // app.use('/data', apiRouter)
   app.get('/data', (req, res) => {
-    console.log("Hello")
+    console.log("Hello there!")
     res.send({ maps: testData.user })
 });
 
