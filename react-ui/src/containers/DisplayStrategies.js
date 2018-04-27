@@ -1,28 +1,10 @@
 import React, { Component }     from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-// import '../styles/Mapstrategies.css';
 import '../styles/index.css';
-
-// Images
-import miragehd         from '../images/hd/miragehd.jpg';
-import trainhd          from '../images/hd/trainhd.jpg';
-import infernohd        from '../images/hd/infernohd.jpg';
-import nukehd           from '../images/hd/nukehd.jpg';
-import cachehd          from '../images/hd/cachehd.jpg';
-import overpasshd       from '../images/hd/overpasshd.png';
-import cobblestonehd    from '../images/hd/cobblestonehd.jpg';
-import dust2hd          from '../images/hd/dust2hd.png';
-
-// import {index}            from '../index';
 
 import {MiddlePicker}   from '../containers/MiddlePicker';
 import {TopTable} from '../components/DisplayStrategiesComponents/TopTable';
-
-
-import Home             from '../Home'
-
-
 import ReactDOM         from 'react-dom';
 import { Link }         from 'react-router-dom';
 import {App}            from '../index';
@@ -33,12 +15,10 @@ export class DisplayStrategies extends Component {
     constructor(props){
         super(props);
         this.state = {
-            currentMap: null,
             strategies: [],
             loading: true,
         }
     }
-
 
     componentDidMount(){
         this.fetchStrategies();
@@ -75,7 +55,7 @@ export class DisplayStrategies extends Component {
         return(
             <div className="strategiesContainer">
               <div className="top">
-                <TopTable currentMap={this.state.currentMap}/>
+                <TopTable/>
               </div>
               <div className="bottom">
               {
