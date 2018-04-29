@@ -17,6 +17,7 @@ export class DisplayStrategies extends Component {
         this.state = {
             strategies: [],
             loading: true,
+            textDisplay: 'Loading...',
         }
     }
 
@@ -24,46 +25,99 @@ export class DisplayStrategies extends Component {
         this.fetchStrategies();
     };
 
-    // We fetch the data from the API
+
+    handleErrors = (response) => {
+      if (!response.ok) throw new Error(response.statusText);
+      return response;
+    }
+    
+    fetchWithErrorHandling = (input, init) => {
+      return fetch(input, init)
+        .then(this.handleErrors)
+    }
+
     fetchStrategies = () => {
-      fetch('/:map/strategies')
-      .then(res => res.json())
-        .catch(console.log(error))
-          .then(strategies => this.setState({strategies, loading: false}, () => {
-      })
-    ).catch(console.log(error))
-  }
+      this.fetchWithErrorHandling('/:map/strategies')
+        .then(res => res.json()
+        .then(strategies =>
+          this.setState({
+            strategies, 
+            loading: false
+        }))
+        .catch(error => {
+          this.setState({
+            textDisplay: 'Error. Something went wrong.'
+          })
+          console.log('error2: ', error)
+      }))
+        .catch(error => {
+          this.setState({
+            textDisplay: 'Error. Something went wrong.'
+          })
+          console.log('error1: ', error)
+        })
+    }
+  
+
+    
+
+    // We fetch the data from the API
+    // fetchStrategies = () => {
+    //     fetch('/:map/strategies')
+    //     if (!res) {
+    //       throw Error(error)
+    //     }
+    //     .then(res => res.json()
+    //     .then(strategies => 
+            // this.setState({
+            //     strategies, 
+            //     loading: false
+            // })
+    //     ).catch((error) => {
+              // this.setState({
+              //   textDisplay: 'Error. Something went wrong.'
+              // })
+              // console.log('error2: ', error)
+    //     })
+
+    //     ).catch((error) => {
+    //       this.setState({
+    //           textDisplay: 'Error. Something went wrong.'
+    //       })
+    //       console.log('error1: ', error)
+    //     })}
+              
 
   // This function goes through the data that is stored in the state.
   // And then returns a card component for each strategy
   renderStrategyCards = () => {
-    const {strategies} = this.state
-    return strategies
-        .map((strategy, index) => {
-            return (
+      const {strategies} = this.state
+      return strategies.map((strategy, index) => {
+          return (
               <StrategyCard 
-                mapName={strategies[index].map} 
-                strategyName={strategies[index].name}  
-                key={index} 
-                strategySummary={strategies[index].summary}
+                  mapName={strategies[index].map} 
+                  strategyName={strategies[index].name}  
+                  key={index} 
+                  strategySummary={strategies[index].summary}
               />
             )
-        })
+        }
+      )
   }
 
     render(){
         return(
             <div className="strategiesContainer">
-              <div className="top">
-                <TopTable/>
-              </div>
-              <div className="bottom">
-              {
-                this.state.loading 
-                ? <h1>Loading..</h1>
-                : this.renderStrategyCards()
-              }
-              </div>
+                <div className="top">
+                    <TopTable/>
+                </div>
+                <div className="bottom">
+                { 
+                      this.state.loading 
+                  ?   <h1>{this.state.textDisplay}</h1>
+                  :   this.renderStrategyCards()
+                }
+                </div>
             </div>
         )
     }
