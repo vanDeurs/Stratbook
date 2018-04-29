@@ -10,9 +10,10 @@ const path = require('path');
 //   });
 
 router.get('/', (req, res) => {
-  // res.setHeader('Content-Type', 'application/json');
-  const strats = JSON.stringify(testData.user.strategies);
-  res.send(JSON.parse(strats));
-  });
+  res.json((testData.user.strategies))
+});
+
+// const strats = JSON.stringify(testData.user.strategies);
+// res.json(JSON.parse(strats));
 
 module.exports = router;

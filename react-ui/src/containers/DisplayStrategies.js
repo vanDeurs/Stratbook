@@ -1,5 +1,6 @@
 import React, { Component }     from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
+import axois from 'axios';
 
 import '../styles/index.css';
 
@@ -26,66 +27,60 @@ export class DisplayStrategies extends Component {
     };
 
 
-    handleErrors = (response) => {
-      if (!response.ok) throw new Error(response.statusText);
-      return response;
-    }
+    // handleErrors = (response) => {
+    //   if (!response.ok) throw new Error(response.statusText);
+    //   return response;
+    // }
     
-    fetchWithErrorHandling = (input, init) => {
-      return fetch(input, init)
-        .then(this.handleErrors)
-    }
+    // fetchWithErrorHandling = (input, init) => {
+    //   return fetch(input, init)
+    //     .then(this.handleErrors)
+    // }
 
-    fetchStrategies = () => {
-      this.fetchWithErrorHandling('/:map/strategies')
-        .then(res => res.json()
-        .then(strategies =>
-          this.setState({
-            strategies, 
-            loading: false
-        }))
-        .catch(error => {
-          this.setState({
-            textDisplay: 'Error. Something went wrong.'
-          })
-          console.log('error2: ', error)
-      }))
-        .catch(error => {
-          this.setState({
-            textDisplay: 'Error. Something went wrong.'
-          })
-          console.log('error1: ', error)
-        })
-    }
-  
-
-    
-
-    // We fetch the data from the API
     // fetchStrategies = () => {
-    //     fetch('/:map/strategies')
-    //     if (!res) {
-    //       throw Error(error)
-    //     }
+    //   this.fetchWithErrorHandling('/:map/strategies')
     //     .then(res => res.json()
-    //     .then(strategies => 
-            // this.setState({
-            //     strategies, 
-            //     loading: false
-            // })
-    //     ).catch((error) => {
-              // this.setState({
-              //   textDisplay: 'Error. Something went wrong.'
-              // })
-              // console.log('error2: ', error)
-    //     })
-
-    //     ).catch((error) => {
+    //     .then(strategies =>
     //       this.setState({
-    //           textDisplay: 'Error. Something went wrong.'
+    //         strategies, 
+    //         loading: false
+    //     }))
+    //     .catch(error => {
+    //       this.setState({
+    //         textDisplay: 'Error. Something went wrong.'
+    //       })
+    //       console.log('error2: ', error)
+    //   }))
+    //     .catch(error => {
+    //       this.setState({
+    //         textDisplay: 'Error. Something went wrong.'
     //       })
     //       console.log('error1: ', error)
-    //     })}
+    //     })
+    // }
+
+    fetchStrategies = () => {
+      const url = '/:map/strategies';
+      axois.get(url)
+        .catch(error => 
+          this.setState({
+            textDisplay: 'Ops. Something went wrong.\n Check your internet connection and refresh.'
+        }))
+        .then(res => {
+          console.log('response', res);
+          const strategies = res.data
+          this.setState({
+            strategies,
+            loading: false
+          })
+        })
+        .catch(error => {
+          console.log('error: ', error)
+          this.setState({
+            textDisplay: 'Ops. Something went wrong.\n Check your internet connection and refresh.'
+          })
+        })
+    };
               
 
   // This function goes through the data that is stored in the state.
