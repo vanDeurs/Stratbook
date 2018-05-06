@@ -52,8 +52,8 @@ export class Header extends Component {
         return(
             <div className="navContainer">
                 <ul>
-                    <li>{this.listValueOne}</li>
-                    <li>{this.state.currentMap}</li>
+                    <li className="navText">CS:GO STRATBOOK</li>
+                    {/* <li>{this.state.currentMap}</li> */}
                 </ul>
             </div>
         )

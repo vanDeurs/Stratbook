@@ -13,6 +13,16 @@ router.get('/', (req, res) => {
   res.json((testData.user.strategies))
 });
 
+router.post('/', (req, res) => {
+  const newStrategy = req.body;
+  newStrategy.id = testData.user.strategies.length + 1;
+  newStrategy.created = new Date();
+
+  testData.user.strategies.push(newStrategy);
+  res.json(newStrategy);
+
+})
+
 // const strats = JSON.stringify(testData.user.strategies);
 // res.json(JSON.parse(strats));
 

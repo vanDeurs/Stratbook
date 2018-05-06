@@ -12,7 +12,7 @@ export class AddStrategyButton extends Component {
     }
     render(){
         return(
-            <button type="button" className="addButton">
+            <button type="button" className="addButton" onClick={this.props.onClick}>
                 <h2 className="addStrategyButtonText">+</h2>
             </button>
         )

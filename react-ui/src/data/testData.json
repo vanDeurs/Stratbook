@@ -7,28 +7,32 @@
                 "map": "Mirage", 
                 "name": "A-split",
                 "summary": "We go three players mid. Smoke off short and window. Go up connector. Two player go palace.",
-                "type": "Fullbuy"
+                "type": "Fullbuy",
+                "created": "2018-05-02"
             },
             {
                 "id": 1,
                 "map": "Cache", 
                 "name": "B-rush",
                 "summary": "We rush four players in to B site. One player lurks mid and cuts of vent rotation.",
-                "type": "Eco"
+                "type": "Eco",
+                "created": "2018-05-03"
             },
             {
                 "id": 2,
                 "map": "Train", 
                 "name": "Pop-attack",
                 "summary": "All five players rush down popdog to A.",
-                "type": "Halfbuy"
+                "type": "Halfbuy",
+                "created": "2018-05-01"
             },
             {
                 "id": 3,
                 "map": "Inferno", 
                 "name": "Molotov-strat",
                 "summary": "We molotov 3 spots on B-site from banana. Then we take the site.",
-                "type": "Fullbuy"
+                "type": "Fullbuy",
+                "created": "2018-05-05"
             }
         ]
     }

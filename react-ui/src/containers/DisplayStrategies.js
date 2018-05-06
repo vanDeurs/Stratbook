@@ -11,6 +11,10 @@ import { Link }         from 'react-router-dom';
 import {App}            from '../index';
 import { StrategyCard } from '../components/DisplayStrategiesComponents/StrategyCard';
 import { error } from 'util';
+import Modal from 'react-modal';
+
+// For screen-readers
+Modal.setAppElement('#root')
 
 export class DisplayStrategies extends Component {
     constructor(props){
@@ -19,6 +23,7 @@ export class DisplayStrategies extends Component {
             strategies: [],
             loading: true,
             textDisplay: 'Loading...',
+            addStrategyModalVisible: false,
         }
     }
 
@@ -27,60 +32,60 @@ export class DisplayStrategies extends Component {
     };
 
 
-    // handleErrors = (response) => {
-    //   if (!response.ok) throw new Error(response.statusText);
-    //   return response;
-    // }
+    handleErrors = (response) => {
+      if (!response.ok) throw new Error(response.statusText);
+      return response;
+    }
     
-    // fetchWithErrorHandling = (input, init) => {
-    //   return fetch(input, init)
-    //     .then(this.handleErrors)
-    // }
-
-    // fetchStrategies = () => {
-    //   this.fetchWithErrorHandling('/:map/strategies')
-    //     .then(res => res.json()
-    //     .then(strategies =>
-    //       this.setState({
-    //         strategies, 
-    //         loading: false
-    //     }))
-    //     .catch(error => {
-    //       this.setState({
-    //         textDisplay: 'Error. Something went wrong.'
-    //       })
-    //       console.log('error2: ', error)
-    //   }))
-    //     .catch(error => {
-    //       this.setState({
-    //         textDisplay: 'Error. Something went wrong.'
-    //       })
-    //       console.log('error1: ', error)
-    //     })
-    // }
+    fetchWithErrorHandling = (input, init) => {
+      return fetch(input, init)
+        .then(this.handleErrors)
+    }
 
     fetchStrategies = () => {
-      const url = '/:map/strategies';
-      axois.get(url)
-        .catch(error => 
+      this.fetchWithErrorHandling('/:map/strategies')
+        .then(res => res.json()
+        .then(strategies =>
           this.setState({
-            textDisplay: 'Ops. Something went wrong.\n Check your internet connection and refresh.'
-        }))
-        .then(res => {
-          console.log('response', res);
-          const strategies = res.data
-          this.setState({
-            strategies,
+            strategies, 
             loading: false
-          })
-        })
+        }))
         .catch(error => {
-          console.log('error: ', error)
           this.setState({
-            textDisplay: 'Ops. Something went wrong.\n Check your internet connection and refresh.'
+            textDisplay: 'Error. Something went wrong.'
           })
+          console.log('error2: ', error)
+      }))
+        .catch(error => {
+          this.setState({
+            textDisplay: 'Error. Something went wrong.'
+          })
+          console.log('error1: ', error)
         })
-    };
+    }
+
+    // fetchStrategies = () => {
+    //   const url = '/:map/strategies';
+    //   axois.get(url)
+    //     .catch(error => 
+    //       this.setState({
+    //         textDisplay: 'Ops. Something went wrong.\n Check your internet connection and refresh.'
+    //     }))
+    //     .then(res => {
+    //       console.log('response', res);
+    //       const strategies = res.data
+    //       this.setState({
+    //         strategies,
+    //         loading: false
+    //       })
+    //     })
+    //     .catch(error => {
+    //       console.log('error: ', error)
+    //       this.setState({
+    //         textDisplay: 'Ops. Something went wrong.\n Check your internet connection and refresh.'
+    //       })
+    //     })
+    // };
               
 
   // This function goes through the data that is stored in the state.
@@ -98,13 +103,48 @@ export class DisplayStrategies extends Component {
             )
         }
       )
+  };
+
+  addStrategyModal = () => {
+      return (
+        <Modal 
+            isOpen={this.state.addStrategyModalVisible}
+            contentLabel="Minimal Modal Example"
+            onRequestClose={this.closeAddStrategyModal}
+            style={customStyles}
+        >
+            <button onClick={this.closeAddStrategyModal}>Close Modal</button>
+        </Modal>
+      )
   }
+
+  // Open Add Strategy Modal function
+  openAddStrategyModal = () => {
+      this.setState({
+          addStrategyModalVisible: true
+      })
+  }
+
+  // Close Add Strategy Modal function
+  closeAddStrategyModal = () => {
+    this.setState({
+        addStrategyModalVisible: false
+    })
+}
+
+  // Function that runs when we click the + button
+  addStrategyButton = () => {
+      this.openAddStrategyModal()
+  };
 
     render(){
         return(
             <div className="strategiesContainer">
+                {this.addStrategyModal()}
                 <div className="top">
-                    <TopTable/>
+                    <TopTable 
+                        addStrategyButton={this.addStrategyButton}
+                    />
                 </div>
                 <div className="bottom">
                 { 
@@ -117,3 +157,14 @@ export class DisplayStrategies extends Component {
         )
     }
 }
+
+const customStyles = {
+    content : {
+      top                   : '20%',
+      left                  : '20%',
+      right                 : '20%',
+      bottom                : '20%',
+    //   marginRight           : '-20%',
+    //   transform             : 'translate(-20%, -20%)'
+    }
+  };

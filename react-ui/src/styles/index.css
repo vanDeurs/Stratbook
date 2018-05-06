@@ -447,9 +447,9 @@ STYLING FOR ADD STRATEGY BUTTON
 */
 
 .addButton {
-  height: 70px;
-  width: 70px;
-  border-radius: 70px;
+  height: 85px;
+  width: 85px;
+  border-radius: 60px;
   background-color: white;
   border: 1px solid #0fbcf9;
   display: flex;
