@@ -14,7 +14,7 @@ import train from './images/train.jpg';
 import dust2 from './images/dust2.jpg';
 import cobble from './images/cobble.jpg';
 import overpass from './images/overpass.jpg';
-
+import 'bootstrap/dist/css/bootstrap.css';
 import { Link } from 'react-router-dom';
 
 

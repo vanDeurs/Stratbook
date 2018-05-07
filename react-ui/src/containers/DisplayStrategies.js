@@ -11,10 +11,7 @@ import { Link }         from 'react-router-dom';
 import {App}            from '../index';
 import { StrategyCard } from '../components/DisplayStrategiesComponents/StrategyCard';
 import { error } from 'util';
-import Modal from 'react-modal';
-
-// For screen-readers
-Modal.setAppElement('#root')
+import { StrategyFormModal } from '../components/DisplayStrategiesComponents/StrategyFormModal';
 
 export class DisplayStrategies extends Component {
     constructor(props){
@@ -100,37 +97,34 @@ export class DisplayStrategies extends Component {
                   key={index} 
                   strategySummary={strategies[index].summary}
               />
-            )
+            );
         }
-      )
+      );
   };
 
+  // Modal for adding strategies (and maybe setups)
   addStrategyModal = () => {
       return (
-        <Modal 
+        <StrategyFormModal 
             isOpen={this.state.addStrategyModalVisible}
-            contentLabel="Minimal Modal Example"
             onRequestClose={this.closeAddStrategyModal}
-            style={customStyles}
-        >
-            <button onClick={this.closeAddStrategyModal}>Close Modal</button>
-        </Modal>
+        />
       )
-  }
+  };
 
   // Open Add Strategy Modal function
   openAddStrategyModal = () => {
       this.setState({
           addStrategyModalVisible: true
       })
-  }
+  };
 
   // Close Add Strategy Modal function
   closeAddStrategyModal = () => {
     this.setState({
         addStrategyModalVisible: false
     })
-}
+};
 
   // Function that runs when we click the + button
   addStrategyButton = () => {
@@ -157,14 +151,3 @@ export class DisplayStrategies extends Component {
         )
     }
 }
-
-const customStyles = {
-    content : {
-      top                   : '20%',
-      left                  : '20%',
-      right                 : '20%',
-      bottom                : '20%',
-    //   marginRight           : '-20%',
-    //   transform             : 'translate(-20%, -20%)'
-    }
-  };

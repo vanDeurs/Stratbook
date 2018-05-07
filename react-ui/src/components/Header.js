@@ -22,37 +22,11 @@ export class Header extends Component {
         }
     }
 
-    componentDidMount() {
-        console.log('Component did mount');
-        this.setState({
-            currentMap: this.props.currentMap
-        })
-
-    }
-
-    // maps = ['train', 'cache', 'overpass', 'mirage', 'nuke', 'cobblestone', 'inferno', 'dust2'];
-    // mapFinder = () => {
-    //     for (let i = 0; i > 9; i++){
-    //         if(inArray(this.maps[i], this.maps)){
-    //             this.setState({
-    //                 currentMap: this.maps[i]
-    //             })
-    //         } else {
-    //             this.setState({
-    //                 currentMap: 'Not found',
-    //             })
-    //         }
-    //     }
-    // };
-
-    // List values
-    listValueOne = 'Home';
-
     render(){
         return(
             <div className="navContainer">
                 <ul>
-                    <li className="navText">CS:GO STRATBOOK</li>
+                    <li className="navText">CS:GO Stratbook</li>
                     {/* <li>{this.state.currentMap}</li> */}
                 </ul>
             </div>

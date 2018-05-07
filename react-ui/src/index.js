@@ -7,6 +7,11 @@ import { RenderStrategies }     from './components/RenderStrategies';
 import { RenderSetups }         from './components/RenderSetups';
 import { BrowserRouter, Route, HashRouter, Link, Switch } from 'react-router-dom';
 import {Layout} from './components/Layout';
+import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap/dist/css/bootstrap-theme.min.css';
+
+import { Navbar, Jumbotron, Button } from 'react-bootstrap';
+
 
 class App extends Component {
   constructor(props) {
@@ -18,7 +23,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // this.forceUpdate()
     fetch('/api')
       .then(response => {
         if (!response.ok) {
@@ -41,7 +45,7 @@ class App extends Component {
   render(){
     return(
           // Pass down current map to Layout.js
-          <Layout currentMap={window.location.pathname}>
+          <Layout>
             <BrowserRouter>
                 <Switch>
                     <Route exact path='/' component={Home}/>
