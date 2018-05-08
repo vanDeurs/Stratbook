@@ -22,6 +22,13 @@ export class DisplayStrategies extends Component {
             textDisplay: 'Loading...',
             addStrategyModalVisible: false,
             formInfo: null,
+
+            // Error messages
+            mapErrorMessage: null,
+            nameErrorMessage: null,
+            summaryErrorMessage: null,
+            explanationErrorMessage: null,
+            typeErrorMessage: null,
         };
     };
 
@@ -74,17 +81,30 @@ export class DisplayStrategies extends Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dataFromForm)
         })
-        .then(res => res.json())
-        .then(updatedStrategy => {
-            // We "update" the strategy and add a date.
-            updatedStrategy.created = new Date(updatedStrategy.created);
-            // We make a variable that contains the current strategies stored in state plus the updatedStrategy.
-            const newStrategies = this.state.strategies.concat(updatedStrategy);
-            // We set the newStrategies to be the strategies.
-            this.setState({ strategies: newStrategies })
+        .then(res => {
+            if (res.ok){
+                res.json()
+                .then(updatedStrategy => {
+                    // We "update" the strategy and add a date.
+                    updatedStrategy.created = new Date(updatedStrategy.created);
+                    // We make a variable that contains the current strategies stored in state plus the updatedStrategy.
+                    const newStrategies = this.state.strategies.concat(updatedStrategy);
+                    // We set the newStrategies to be the strategies.
+                    this.setState({ strategies: newStrategies })
+                })
+            } else {
+                res.json()
+                .then(err => {
+                    this.setState({
+                        nameErrorMessage: err.message
+                    });
+                    // alert('Failed to add strategy: ' + err.message);
+                })
+            }
         }).catch(err => {
             alert('Error in sending data to sercer: ' + err.message);
         });
+
     };
               
 
@@ -111,7 +131,6 @@ export class DisplayStrategies extends Component {
         );
     };
 
-
   // Modal for adding strategies
   addStrategyModal = () => {
       return (
@@ -119,6 +138,9 @@ export class DisplayStrategies extends Component {
             isOpen={this.state.addStrategyModalVisible}
             onRequestClose={this.closeAddStrategyModal}
             onSubmit={this.submitForm}
+
+            // Error messages
+            nameErrorMessage={this.state.nameErrorMessage}
         />
       )
   };

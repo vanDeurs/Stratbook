@@ -1,5 +1,5 @@
 import React, { Component }     from 'react';
-import { Button, Form, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+import { Button, Form, ControlLabel, FormControl, FormGroup, FormControlFeedback} from 'react-bootstrap';
 import ReactDOM         from 'react-dom';
 import '../../styles/index.css';
 import Modal from 'react-modal';
@@ -11,11 +11,21 @@ export class StrategyFormModal extends Component {
     constructor(props){
         super(props);
         this.state = {
+            // Form values 
             mapValue: '',
             nameValue: '',
             summaryValue: '',
             explanationValue: '',
             typeValue: '',
+
+            // Error messages
+            mapErrorMessage: null,
+            nameErrorMessage: null,
+            summaryErrorMessage: null,
+            explanationErrorMessage: null,
+            typeErrorMessage: null,
+
+
         };
     };
 
@@ -78,20 +88,30 @@ export class StrategyFormModal extends Component {
         this.props.onSubmit(formInfo);
     };
 
-
+    // Error messages
+    
     render(){
 
+        const   mapErrorMessage         = this.props.mapErrorMessage            ? <p className="formErrorMessage">{this.state.mapErrorMessage}</p>          : null;
+        const   nameErrorMessage        = this.props.nameErrorMessage           ? <p className="formErrorMessage">{this.state.nameErrorMessage}</p>         : null;
+        const   summaryErrorMessage     = this.props.summaryErrorMessage        ? <p className="formErrorMessage">{this.state.summaryErrorMessage}</p>      : null;
+        const   typeErrorMessage        = this.props.typeErrorMessage           ? <p className="formErrorMessage">{this.state.typeErrorMessage}</p>         : null;
+        const   explanationErrorMessage = this.props.explanationErrorMessage    ? <p className="formErrorMessage">{this.state.explanationErrorMessage}</p>  : null;
+
         const form = (
-            <form onSubmit={this.onSubmit}> 
-                <ControlLabel>Strategy Name</ControlLabel>
-                <FormControl
-                    type="text"
-                    value={this.state.nameValue}
-                    placeholder="Enter the strategy name"
-                    onChange={this.handleNameChange}
-                />
-                <FormGroup controlId="formControlsSelect">
-                    <ControlLabel>Map</ControlLabel>
+            <form onSubmit={this.onSubmit} className="formContainer"> 
+                <FormGroup className="formGroup">
+                    <ControlLabel className="formHeader">Strategy Name</ControlLabel>
+                    <FormControl
+                        type="text"
+                        value={this.state.nameValue}
+                        placeholder="Enter the strategy name"
+                        onChange={this.handleNameChange}
+                    />
+                    <ControlLabel className="formErrorMessage">{this.props.nameErrorMessage}</ControlLabel>
+                </FormGroup>
+                <FormGroup className="formGroup" controlId="formControlsSelect">
+                    <ControlLabel className="formHeader">Map</ControlLabel>
                     <FormControl componentClass="select" placeholder="Select" onChange={this.handleMapChange}>
                         <option value="select">Select Map</option>
                         <option value="Mirage">Mirage</option>
@@ -103,9 +123,11 @@ export class StrategyFormModal extends Component {
                         <option value="Inferno">Inferno</option>
                         <option value="Train">Train</option>
                     </FormControl>
+                <ControlLabel className="formErrorMessage">{this.props.mapErrorMessage}</ControlLabel>
                 </FormGroup>
-                <FormGroup controlId="formControlsSelectMultiple">
-                    <ControlLabel>Type</ControlLabel>
+
+                <FormGroup className="formGroup" controlId="formControlsSelectMultiple">
+                    <ControlLabel className="formHeader">Type</ControlLabel>
                     <FormControl componentClass="select" onChange={this.handleTypeChange}> {/* Make it a multi-pick in the future. Just add 'multiple' */}
                         <option value="select">Select Type</option>
                         <option value="Fullbuy">Fullbuy</option>
@@ -114,16 +136,19 @@ export class StrategyFormModal extends Component {
                         <option value="Pistol">Pistol</option>
                         <option value="All">All</option>
                     </FormControl>
+                <ControlLabel className="formErrorMessage">{this.props.typeErrorMessage}</ControlLabel>
                 </FormGroup>
 
-                <FormGroup controlId="formControlsTextarea">
-                    <ControlLabel>Summary</ControlLabel>
+                <FormGroup className="formGroup" controlId="formControlsTextarea">
+                    <ControlLabel className="formHeader">Summary</ControlLabel>
                     <FormControl componentClass="textarea" placeholder="Give a breif summary of the strategy" onChange={this.handleSummaryChange} />
+                <ControlLabel className="formErrorMessage">{this.props.summaryErrorMessage}</ControlLabel>
                 </FormGroup>
-
-                <FormGroup controlId="formControlsTextarea">
-                    <ControlLabel>Detailed explanation</ControlLabel>
+                
+                <FormGroup className="formGroup" controlId="formControlsTextarea">
+                    <ControlLabel className="formHeader">Detailed explanation</ControlLabel>
                     <FormControl componentClass="textarea" placeholder="Explain the strategy in detail. Please use the strategy writing guide for structure" onChange={this.handleExplanationChange}/>
+                <ControlLabel className="formErrorMessage">{this.props.explanationErrorMessage}</ControlLabel>
                 </FormGroup>
 
                 <Button type="submit">Submit</Button>
@@ -136,19 +161,10 @@ export class StrategyFormModal extends Component {
                 isOpen={this.props.isOpen}
                 contentLabel="Minimal Modal Example"
                 onRequestClose={this.props.onRequestClose}
-                style={customStyles}
+                className="formModal"
             >
                 {form}
             </Modal>
         );
     };
 };
-
-const customStyles = {
-    content : {
-      top                   : '20%',
-      left                  : '20%',
-      right                 : '20%',
-      bottom                : '20%',
-    }
-  };
