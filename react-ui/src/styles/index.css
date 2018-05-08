@@ -36,6 +36,13 @@ body {
     margin: 0;
   }
 
+  .formErrorMessage {
+    color: red;
+    font-size: 11px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500;
+  }
+
 /* 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -43,6 +50,56 @@ HEADER
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 */
+
+nav {
+  background-color: #00F;
+  overflow: hidden;
+  padding: 1em;
+  border-bottom: 1px solid #000;
+  height: 7vh;
+}
+nav a {
+  color: #FFF;
+}
+nav a:visited {
+  color: #FFF;
+}
+nav .navWide {
+  display: none;
+  margin: 0 auto;
+}
+nav .navWide .wideDiv {
+  text-align: center;
+}
+nav .navWide .wideDiv a {
+  text-decoration: none;
+  display: inline-block;
+  padding: 0 2em;
+}
+nav .navNarrow i {
+  float: left;
+  cursor: pointer;
+  color: #FFF;
+}
+nav .navNarrow .narrowLinks {
+  display: none;
+}
+nav .navNarrow .narrowLinks a {
+  text-decoration: none;
+  display: block;
+  float: left;
+  clear: left;
+  padding: 0.5em 0;
+}
+
+@media (min-width: 480px) {
+  nav .navWide {
+    display: block;
+  }
+  nav .navNarrow {
+    display: none;
+  }
+}
 
 .navContainer {
   margin: 0;
@@ -476,6 +533,7 @@ STYLING FOR ADD STRATEGY BUTTON
 
 .addButton:focus {
   outline: none;
+  background-color: white;
 }
 
 .addButton:hover > .addStrategyButtonText {
@@ -607,6 +665,53 @@ STYLING FOR SEARCH BAR
   border-radius: 5px;
   border: 1px solid #0fbcf9;
 }
+
+/* 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+STYLING FOR FORM 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+.formModal {
+  border: 1px solid #ffa801;
+  border-radius: 5px;
+  background-color: white;
+  margin: auto;
+  top: 15%;
+  bottom: 15%;
+  left: 15%;
+  right: 15%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.formContainer {
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.formGroup {
+  /* border: 1px solid black; */
+  width: 65%;
+
+}
+.formHeader {
+  font-size: 18px;
+  color: #ffa801;
+  font-weight: 500;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+
 
 
 

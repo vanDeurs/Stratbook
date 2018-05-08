@@ -7,7 +7,7 @@ export class Layout extends Component {
         return (
             // Pass down current map to header
             <div style={{height: '100%'}}>
-                <Header currentMap={this.props.currentMap}/>
+                <Header/>
                 {this.props.children}
                 <Footer />
             </div>
