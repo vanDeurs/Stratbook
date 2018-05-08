@@ -1,5 +1,5 @@
 import React, { Component }     from 'react';
-import { Button, Form, ControlLabel, FormControl, Radio, Checkbox, FormGroup } from 'react-bootstrap';
+import { Button, Form, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 import ReactDOM         from 'react-dom';
 import '../../styles/index.css';
 import Modal from 'react-modal';
@@ -14,27 +14,36 @@ export class StrategyFormModal extends Component {
             mapValue: '',
             nameValue: '',
             summaryValue: '',
+            explanationValue: '',
             typeValue: '',
             createdValue: '',
-            value: '',
         }
     };
 
     componentDidMount(){
-        this.setState({
-            mapValue: '',
-            nameValue: '',
-            summaryValue: '',
-            typeValue: '',
-            createdValue: '',
-            value: '',
-        })
     }
+
+    ////////////////////////////////////////////////////////////////
+    // Handle change functions
+    ////////////////////////////////////////////////////////////////
+
 
     handleNameChange = (e) => {
         this.setState({
             nameValue: e.target.value
         });
+    }
+
+    handleMapChange = (e) => {
+        this.setState({
+            mapValue: e.target.value
+        })
+    }
+
+    handleTypeChange = (e) => {
+        this.setState({
+            typeValue: e.target.value
+        })
     }
 
     handleSummaryChange = (e) => {
@@ -43,10 +52,33 @@ export class StrategyFormModal extends Component {
         });
     }
 
+    handleExplanationChange = (e) => {
+        this.setState({
+            explanationValue: e.target.value
+        })
+    }
+
+    ////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
+
+    onSubmit = (e) => {
+        e.preventDefault();
+        const {nameValue, mapValue, typeValue, summaryValue, explanationValue} = this.state
+        const formInfo = {
+            nameValue,
+            mapValue,
+            typeValue,
+            summaryValue,
+            explanationValue
+        }
+        this.props.onSubmit(formInfo)
+    }
+
+
     render(){
 
         const form = (
-            <form>
+            <form onSubmit={this.onSubmit}> 
                 <ControlLabel>Strategy Name</ControlLabel>
                 <FormControl
                     type="text"
@@ -56,7 +88,7 @@ export class StrategyFormModal extends Component {
                 />
                 <FormGroup controlId="formControlsSelect">
                     <ControlLabel>Map</ControlLabel>
-                    <FormControl componentClass="select" placeholder="Select">
+                    <FormControl componentClass="select" placeholder="Select" onChange={this.handleMapChange}>
                         <option value="select">Select Map</option>
                         <option value="Mirage">Mirage</option>
                         <option value="Cache">Cache</option>
@@ -70,24 +102,24 @@ export class StrategyFormModal extends Component {
                 </FormGroup>
                 <FormGroup controlId="formControlsSelectMultiple">
                     <ControlLabel>Type</ControlLabel>
-                    <FormControl componentClass="select" multiple>
+                    <FormControl componentClass="select" onChange={this.handleTypeChange}> {/* Make it a multi-pick in the future. Just add 'multiple' */}
                         <option value="select">Select Type</option>
-                        <option value="other">Fullbuy</option>
-                        <option value="other">Eco</option>
-                        <option value="other">Halfbuy</option>
-                        <option value="other">Pistol</option>
-                        <option value="other">All</option>
+                        <option value="Fullbuy">Fullbuy</option>
+                        <option value="Eco">Eco</option>
+                        <option value="Halfbuy">Halfbuy</option>
+                        <option value="Pistol">Pistol</option>
+                        <option value="All">All</option>
                     </FormControl>
                 </FormGroup>
 
                 <FormGroup controlId="formControlsTextarea">
                     <ControlLabel>Summary</ControlLabel>
-                    <FormControl componentClass="textarea" placeholder="Give a breif summary of the strategy" />
+                    <FormControl componentClass="textarea" placeholder="Give a breif summary of the strategy" onChange={this.handleSummaryChange} />
                 </FormGroup>
 
                 <FormGroup controlId="formControlsTextarea">
                     <ControlLabel>Detailed explanation</ControlLabel>
-                    <FormControl componentClass="textarea" placeholder="Explain the strategy in detail. Please use the strategy writing guide for structure" />
+                    <FormControl componentClass="textarea" placeholder="Explain the strategy in detail. Please use the strategy writing guide for structure" onChange={this.handleExplanationChange}/>
                 </FormGroup>
 
                 <Button type="submit">Submit</Button>

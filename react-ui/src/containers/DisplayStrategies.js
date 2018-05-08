@@ -21,6 +21,7 @@ export class DisplayStrategies extends Component {
             loading: true,
             textDisplay: 'Loading...',
             addStrategyModalVisible: false,
+            formInfo: null,
         }
     }
 
@@ -40,67 +41,63 @@ export class DisplayStrategies extends Component {
     }
 
     fetchStrategies = () => {
-      this.fetchWithErrorHandling('/:map/strategies')
-        .then(res => res.json()
-        .then(strategies =>
-          this.setState({
-            strategies, 
-            loading: false
-        }))
-        .catch(error => {
-          this.setState({
-            textDisplay: 'Error. Something went wrong.'
+        this.fetchWithErrorHandling('/:map/strategies')
+          .then(res => res.json())
+          .then(strategies => {
+              strategies.forEach(strategy => {
+                  strategy.created = new Date (strategy.created)
+              })
+              this.setState({ strategies, loading: false})
+          }).catch(err => {
+              console.log(err)
+              this.setState({ textDisplay: 'Sorry - something went wrong.' })
           })
-          console.log('error2: ', error)
-      }))
-        .catch(error => {
-          this.setState({
-            textDisplay: 'Error. Something went wrong.'
-          })
-          console.log('error1: ', error)
-        })
-    }
+      }
 
-    // fetchStrategies = () => {
-    //   const url = '/:map/strategies';
-    //   axois.get(url)
-    //     .catch(error => 
-    //       this.setState({
-    //         textDisplay: 'Ops. Something went wrong.\n Check your internet connection and refresh.'
-    //     }))
-    //     .then(res => {
-    //       console.log('response', res);
-    //       const strategies = res.data
-    //       this.setState({
-    //         strategies,
-    //         loading: false
-    //       })
-    //     })
-    //     .catch(error => {
-    //       console.log('error: ', error)
-    //       this.setState({
-    //         textDisplay: 'Ops. Something went wrong.\n Check your internet connection and refresh.'
-    //       })
-    //     })
-    // };
+      // I am literally a god.
+    submitForm = (dataFromForm) => {
+        this.setState({formInfo: dataFromForm})
+        console.log(console.log(this.state.formInfo))
+
+        fetch('/:map/strategies', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dataFromForm)
+        })
+        .then(res => res.json())
+        .then(updatedStrategy => {
+            updatedStrategy.created = new Date(updatedStrategy.created);
+            const newStrategies = this.state.strategies.concat(updatedStrategy);
+            this.setState({ strategies: newStrategies })
+        }).catch(err => {
+            alert('Error in sending data to sercer: ' + err.message);
+        })
+    };
               
 
-  // This function goes through the data that is stored in the state.
-  // And then returns a card component for each strategy
-  renderStrategyCards = () => {
-      const {strategies} = this.state
-      return strategies.map((strategy, index) => {
-          return (
-              <StrategyCard 
-                  mapName={strategies[index].map} 
-                  strategyName={strategies[index].name}  
-                  key={index} 
-                  strategySummary={strategies[index].summary}
-              />
-            );
-        }
-      );
-  };
+    // This function goes through the data that is stored in the state.
+    // And then returns a card component for each strategy
+    renderStrategyCards = () => {
+        const {strategies} = this.state
+        return strategies.map(strategy => {
+            console.log('strategies: ', strategies)
+            console.log('strategy', strategy.created)
+            return (
+                <StrategyCard 
+                    mapName={strategy.mapValue} 
+                    strategyName={strategy.nameValue}  
+                    key={strategy.id} 
+                    strategySummary={strategy.summaryValue}
+                    strategyExplanation={strategy.explanationValue}
+                    strategyId={strategy.id}
+                    strategyType={strategy.typeValue}
+                    strategyCreated={strategy.created.toString()}
+                />
+                );
+            }
+        );
+    };
+
 
   // Modal for adding strategies (and maybe setups)
   addStrategyModal = () => {
@@ -108,6 +105,8 @@ export class DisplayStrategies extends Component {
         <StrategyFormModal 
             isOpen={this.state.addStrategyModalVisible}
             onRequestClose={this.closeAddStrategyModal}
+            // submitForm={(newStrategyData) => this.submitForm(newStrategyData)}
+            onSubmit={this.submitForm}
         />
       )
   };

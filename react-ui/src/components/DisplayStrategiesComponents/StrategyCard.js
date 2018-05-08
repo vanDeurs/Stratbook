@@ -20,13 +20,22 @@ export class StrategyCard extends Component {
         const {
             mapName,
             strategyName,
-            strategySummary
+            strategySummary,
+            strategyExplanation,
+            strategyId,
+            strategyType,
+            strategyCreated,
         } = this.props
 
         return(
             <div className="strategyCardContainer">
                 <h1>{mapName+ ' ' + strategyName}</h1>
-                <h2>{strategySummary}</h2>
+                <h2>Summary: {strategySummary}</h2>
+                <h2>Explanation: {strategyExplanation}</h2>
+                <h2>ID: {strategyId}</h2>
+                <h2>Type: {strategyType}</h2>
+                <h2>Created: {strategyCreated}</h2>
+                
             </div>
         )
     }
