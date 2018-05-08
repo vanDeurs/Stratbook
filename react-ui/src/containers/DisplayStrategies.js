@@ -22,24 +22,29 @@ export class DisplayStrategies extends Component {
             textDisplay: 'Loading...',
             addStrategyModalVisible: false,
             formInfo: null,
-        }
-    }
+        };
+    };
 
+    // When the pages has mounted, it fetches the strategies.
     componentDidMount(){
         this.fetchStrategies();
     };
 
 
+    // This handles errors
     handleErrors = (response) => {
       if (!response.ok) throw new Error(response.statusText);
       return response;
-    }
+    };
     
+    // This handles fetching errors
     fetchWithErrorHandling = (input, init) => {
       return fetch(input, init)
         .then(this.handleErrors)
-    }
+    };
 
+    // Here we use our custom error handler to fetch the data from the backend.
+    // The data fetched is the strategies. (could be more in the future)
     fetchStrategies = () => {
         this.fetchWithErrorHandling('/:map/strategies')
           .then(res => res.json())
@@ -47,18 +52,23 @@ export class DisplayStrategies extends Component {
               strategies.forEach(strategy => {
                   strategy.created = new Date (strategy.created)
               })
-              this.setState({ strategies, loading: false})
+              this.setState({ strategies, loading: false});
           }).catch(err => {
-              console.log(err)
-              this.setState({ textDisplay: 'Sorry - something went wrong.' })
-          })
-      }
+              console.log('Err', err);
+              this.setState({ textDisplay: 'Sorry - something went wrong.' });
+          });
+      };
 
       // I am literally a god.
+      // This functions gets run by the prop function in StrategyFormModal.js
+      // It is run in the <StrategyFormModal ... /> below.
+      // This is so we can access the state in that child.
+      // Here we use the createAPI to create a strategy. 
+      // The body is the form info that we got from StrategyFormModal.
     submitForm = (dataFromForm) => {
-        this.setState({formInfo: dataFromForm})
-        console.log(console.log(this.state.formInfo))
+        this.setState({formInfo: dataFromForm});
 
+        // We fetch the data.
         fetch('/:map/strategies', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -66,12 +76,15 @@ export class DisplayStrategies extends Component {
         })
         .then(res => res.json())
         .then(updatedStrategy => {
+            // We "update" the strategy and add a date.
             updatedStrategy.created = new Date(updatedStrategy.created);
+            // We make a variable that contains the current strategies stored in state plus the updatedStrategy.
             const newStrategies = this.state.strategies.concat(updatedStrategy);
+            // We set the newStrategies to be the strategies.
             this.setState({ strategies: newStrategies })
         }).catch(err => {
             alert('Error in sending data to sercer: ' + err.message);
-        })
+        });
     };
               
 
@@ -99,13 +112,12 @@ export class DisplayStrategies extends Component {
     };
 
 
-  // Modal for adding strategies (and maybe setups)
+  // Modal for adding strategies
   addStrategyModal = () => {
       return (
         <StrategyFormModal 
             isOpen={this.state.addStrategyModalVisible}
             onRequestClose={this.closeAddStrategyModal}
-            // submitForm={(newStrategyData) => this.submitForm(newStrategyData)}
             onSubmit={this.submitForm}
         />
       )
@@ -147,6 +159,6 @@ export class DisplayStrategies extends Component {
                 }
                 </div>
             </div>
-        )
-    }
-}
+        );
+    };
+};

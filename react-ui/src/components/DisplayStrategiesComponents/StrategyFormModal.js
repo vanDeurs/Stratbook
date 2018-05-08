@@ -16,12 +16,11 @@ export class StrategyFormModal extends Component {
             summaryValue: '',
             explanationValue: '',
             typeValue: '',
-            createdValue: '',
-        }
+        };
     };
 
     componentDidMount(){
-    }
+    };
 
     ////////////////////////////////////////////////////////////////
     // Handle change functions
@@ -32,47 +31,52 @@ export class StrategyFormModal extends Component {
         this.setState({
             nameValue: e.target.value
         });
-    }
+    };
 
     handleMapChange = (e) => {
         this.setState({
             mapValue: e.target.value
-        })
-    }
+        });
+    };
 
     handleTypeChange = (e) => {
         this.setState({
             typeValue: e.target.value
-        })
-    }
+        });
+    };
 
     handleSummaryChange = (e) => {
         this.setState({
             summaryValue: e.target.value
         });
-    }
+    };
 
     handleExplanationChange = (e) => {
         this.setState({
             explanationValue: e.target.value
-        })
-    }
+        });
+    };
 
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
 
+    // Runs when the form below is submitted
     onSubmit = (e) => {
+        // Prevents page from reloading
         e.preventDefault();
-        const {nameValue, mapValue, typeValue, summaryValue, explanationValue} = this.state
+        const {nameValue, mapValue, typeValue, summaryValue, explanationValue} = this.state;
         const formInfo = {
             nameValue,
             mapValue,
             typeValue,
             summaryValue,
             explanationValue
-        }
-        this.props.onSubmit(formInfo)
-    }
+        };
+        // This function is passed as a prop to DisplayStrategies.js
+        // So that DisplayStrategies.js can access formInfo which is passed in as a parameter.
+        // Because DisplayStrategies needs the form info for the StrategyCards.
+        this.props.onSubmit(formInfo);
+    };
 
 
     render(){
@@ -124,8 +128,9 @@ export class StrategyFormModal extends Component {
 
                 <Button type="submit">Submit</Button>
             </form>
-        )
+        );
 
+        // Here we return the modal with the form in it
         return (
             <Modal 
                 isOpen={this.props.isOpen}
@@ -135,9 +140,9 @@ export class StrategyFormModal extends Component {
             >
                 {form}
             </Modal>
-        )
-    }
-}
+        );
+    };
+};
 
 const customStyles = {
     content : {

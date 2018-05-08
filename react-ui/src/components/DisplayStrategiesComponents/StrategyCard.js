@@ -9,11 +9,11 @@ export class StrategyCard extends Component {
     constructor(props){
         super(props)
         this.state = {
-        }
-    }
+        };
+    };
 
     componentDidMount(){
-    }
+    };
 
     render(){
 
@@ -25,7 +25,7 @@ export class StrategyCard extends Component {
             strategyId,
             strategyType,
             strategyCreated,
-        } = this.props
+        } = this.props;
 
         return(
             <div className="strategyCardContainer">
@@ -37,6 +37,6 @@ export class StrategyCard extends Component {
                 <h2>Created: {strategyCreated}</h2>
                 
             </div>
-        )
-    }
-}
+        );
+    };
+};
