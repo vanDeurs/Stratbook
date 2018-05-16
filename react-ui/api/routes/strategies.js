@@ -27,10 +27,19 @@ function validateStrategy(strategy){
   }
 }
 
+// Create strategy
 router.post('/', (req, res) => {
   const newStrategy = req.body;
   newStrategy.id = testData.user.strategies.length + 1;
-  newStrategy.created = new Date();
+  const dateObj = new Date();
+  const month = dateObj.getUTCMonth() + 1; //months from 1-12
+  const day = dateObj.getUTCDate();
+  const year = dateObj.getUTCFullYear();
+
+  newdate = year + "/" + month + "/" + day;
+  newStrategy.created = newdate;
+  console.log(newdate);
+  console.log(newStrategy.created);
 
   const err = validateStrategy(newStrategy);
   if (err){
@@ -40,6 +49,10 @@ router.post('/', (req, res) => {
   testData.user.strategies.push(newStrategy);
   res.json(newStrategy);
 
+})
+
+router.delete('/', (req, res) => {
+  const deleteStrategy = req.body;
 })
 
 module.exports = router;
