@@ -22,6 +22,7 @@ export class DisplayStrategies extends Component {
             textDisplay: 'Loading...',
             addStrategyModalVisible: false,
             formInfo: null,
+            createdDate: '',
 
             // Error messages
             mapErrorMessage: null,
@@ -34,6 +35,7 @@ export class DisplayStrategies extends Component {
 
     // When the pages has mounted, it fetches the strategies.
     componentDidMount(){
+        console.log('Component did mount!')
         this.fetchStrategies();
     };
 
@@ -56,9 +58,6 @@ export class DisplayStrategies extends Component {
         this.fetchWithErrorHandling('/:map/strategies')
           .then(res => res.json())
           .then(strategies => {
-              strategies.forEach(strategy => {
-                  strategy.created = new Date (strategy.created)
-              })
               this.setState({ strategies, loading: false});
           }).catch(err => {
               console.log('Err', err);
@@ -73,6 +72,7 @@ export class DisplayStrategies extends Component {
       // Here we use the createAPI to create a strategy. 
       // The body is the form info that we got from StrategyFormModal.
     submitForm = (dataFromForm) => {
+        // Store the pulled data in this.state.formInfo
         this.setState({formInfo: dataFromForm});
 
         // We fetch the data.
@@ -85,36 +85,67 @@ export class DisplayStrategies extends Component {
             if (res.ok){
                 res.json()
                 .then(updatedStrategy => {
-                    // We "update" the strategy and add a date.
-                    updatedStrategy.created = new Date(updatedStrategy.created);
                     // We make a variable that contains the current strategies stored in state plus the updatedStrategy.
                     const newStrategies = this.state.strategies.concat(updatedStrategy);
                     // We set the newStrategies to be the strategies.
-                    this.setState({ strategies: newStrategies })
+                    this.setState({ 
+                        strategies: newStrategies,
+                        addStrategyModalVisible: false,
+                        // Here we need to reset the state in the child StrategyFormModa with a callback.
+                    })
                 })
             } else {
                 res.json()
                 .then(err => {
                     this.setState({
-                        nameErrorMessage: err.message
+                        nameErrorMessage: err.message,
                     });
                     // alert('Failed to add strategy: ' + err.message);
                 })
             }
         }).catch(err => {
-            alert('Error in sending data to sercer: ' + err.message);
+            this.setState({
+                nameErrorMessage: 'Error in sending data to server:' + err.message,
+            });
+            // alert('Error in sending data to server: ' + err.message);
         });
 
-    };
-              
+    };       
+
+    decideDate = () => {
+        const today = new Date();
+        console.log('date', this.state.strategies)
+        this.state.strategies.forEach(strategy => {
+            if(strategy.created === today){
+                strategy.created = "today"
+                console.log('Whohooo', strategy.created)
+            } else {
+                strategy.created = strategy.created
+            }
+        })
+    }
+
 
     // This function goes through the data that is stored in the state.
     // And then returns a card component for each strategy
     renderStrategyCards = () => {
         const {strategies} = this.state
+
+        // Date stuff - move this to a separate function
+        const dateObj = new Date();
+        const month = dateObj.getUTCMonth() + 1; // months from 1-12
+        const day = dateObj.getUTCDate();
+        const year = dateObj.getUTCFullYear();
+        const today = year + "/" + month + "/" + day;
+
         return strategies.map(strategy => {
+            // If the strategy created date is the same as the current date
+            // We set the created header to "today"
+            if (strategy.created === today){
+                strategy.created = 'TODAYYY'
+            }
             console.log('strategies: ', strategies)
-            console.log('strategy', strategy.created)
+            console.log('strategy.created', strategy.created)
             return (
                 <StrategyCard 
                     mapName={strategy.mapValue} 
@@ -124,7 +155,7 @@ export class DisplayStrategies extends Component {
                     strategyExplanation={strategy.explanationValue}
                     strategyId={strategy.id}
                     strategyType={strategy.typeValue}
-                    strategyCreated={strategy.created.toString()}
+                    strategyCreated={strategy.created}
                 />
                 );
             }
@@ -138,7 +169,6 @@ export class DisplayStrategies extends Component {
             isOpen={this.state.addStrategyModalVisible}
             onRequestClose={this.closeAddStrategyModal}
             onSubmit={this.submitForm}
-
             // Error messages
             nameErrorMessage={this.state.nameErrorMessage}
         />
