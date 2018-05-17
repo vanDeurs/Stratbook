@@ -37,9 +37,9 @@ export class Header extends Component {
             <div className="navNarrow">
                 <i className="fa fa-bars fa-2x" onClick={this.burgerToggle}></i>
                 <div className="narrowLinks">
-                    {/* <Link to={'/'} className="navbarLink">Home</Link>
-                    <Link to={this.props.mapName} className="navbarLink">{this.props.mapName}</Link>  
-                    <Link to={this.props.mapName} className="navbarLink">{this.props.mapName}</Link>                  <a href="#" onClick={this.burgerToggle}>Link 3</a> */}
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
                 </div>
             </div>
         </nav>

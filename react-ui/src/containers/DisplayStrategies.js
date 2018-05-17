@@ -112,18 +112,24 @@ export class DisplayStrategies extends Component {
 
     };       
 
-    decideDate = () => {
-        const today = new Date();
-        console.log('date', this.state.strategies)
-        this.state.strategies.forEach(strategy => {
-            if(strategy.created === today){
-                strategy.created = "today"
-                console.log('Whohooo', strategy.created)
-            } else {
-                strategy.created = strategy.created
-            }
-        })
-    }
+    // decideDate = () => {
+    //     // Date stuff - so it matches the backend format
+    //     const dateObj = new Date();
+    //     const month = dateObj.getUTCMonth() + 1; // months from 1-12
+    //     const day = dateObj.getUTCDate();
+    //     const year = dateObj.getUTCFullYear();
+    //     const today = year + "/" + month + "/" + day;
+
+    //     console.log('date', this.state.strategies)
+    //     this.state.strategies.forEach(strategy => {
+    //         if(strategy.created === today){
+    //             strategy.created = "today"
+    //             console.log('Whohooo', strategy.created)
+    //         } else {
+    //             strategy.created = strategy.created
+    //         }
+    //     })
+    // }
 
 
     // This function goes through the data that is stored in the state.
@@ -142,7 +148,7 @@ export class DisplayStrategies extends Component {
             // If the strategy created date is the same as the current date
             // We set the created header to "today"
             if (strategy.created === today){
-                strategy.created = 'TODAYYY'
+                strategy.created = 'today'
             }
             console.log('strategies: ', strategies)
             console.log('strategy.created', strategy.created)

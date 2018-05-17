@@ -36,7 +36,6 @@ export class StrategyFormModal extends Component {
     // Handle change functions
     ////////////////////////////////////////////////////////////////
 
-
     handleNameChange = (e) => {
         this.setState({
             nameValue: e.target.value
@@ -86,12 +85,16 @@ export class StrategyFormModal extends Component {
         // So that DisplayStrategies.js can access formInfo which is passed in as a parameter.
         // Because DisplayStrategies needs the form info for the StrategyCards.
         this.props.onSubmit(formInfo);
+
+        // Reset the form. May need to do this in DisplayStrategies, so it doesn't reset if the function doesn't go through. 
+        // Can do a callback to reset the state here from there.
     };
 
     // Error messages
     
     render(){
 
+        // Below is not used atm. Remove ?
         const   mapErrorMessage         = this.props.mapErrorMessage            ? <p className="formErrorMessage">{this.state.mapErrorMessage}</p>          : null;
         const   nameErrorMessage        = this.props.nameErrorMessage           ? <p className="formErrorMessage">{this.state.nameErrorMessage}</p>         : null;
         const   summaryErrorMessage     = this.props.summaryErrorMessage        ? <p className="formErrorMessage">{this.state.summaryErrorMessage}</p>      : null;

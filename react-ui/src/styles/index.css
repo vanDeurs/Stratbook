@@ -338,11 +338,13 @@ STYLING FOR THE MIDDLEPICKER
 }
 
 .strategiButton:hover {
+    box-shadow: 0px 0px 14px 10px rgba(0,0,0,0.57);
     -webkit-box-shadow: 0px 0px 14px 10px rgba(0,0,0,0.57);
     -moz-box-shadow: 0px 0px 14px 10px rgba(0,0,0,0.57);
 }
 
 .setupButton:hover {
+    box-shadow: 0px 0px 14px 10px rgba(0,0,0,0.57);
     -webkit-box-shadow: 0px 0px 14px 10px rgba(0,0,0,0.57);
     -moz-box-shadow: 0px 0px 14px 10px rgba(0,0,0,0.57);
 }
@@ -430,6 +432,8 @@ STYLING FOR THE STRATEGY CARD
     background: rgba(255, 255, 255, 1);
     border: 1px solid #ccc;
     border-radius: 2px;
+    display: flex;
+    flex-direction: column;
     /* padding: 2vh 3vw; */
 }
 
@@ -441,6 +445,97 @@ h1 {
 h2 {
     font-size: 25px;
     color: #333;
+}
+
+.cardNameDiv {
+  display: flex;
+  flex-direction: row;
+  width: 33.33333%;
+  justify-content: center;
+  align-items: center;
+  border-right: 2px solid lightgrey;
+}
+/* Because I don't want it to have a border. Fix properly later. */
+.cardTypeDiv {
+  display: flex;
+  flex-direction: row;
+  width: 33.33333%;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardTopWrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+  height: 50%;
+  border-bottom: 1px solid lightgrey;
+}
+
+
+.cardBottomWrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+  height: 50%;
+  padding-left: 7.5%;
+}
+
+.cardCreatedDiv {
+  width: 25%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid red; */
+}
+
+.cardSummaryDiv {
+  width: 72.5%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  /* border: 1px solid red; */
+}
+
+.cardSummaryText {
+  font-size: 16px;
+  color: rgb(158, 158, 158);
+  padding-left: 10px;
+}
+
+.cardSummaryHeader {
+  font-size: 26px;
+  color: #ffa801;
+  /* margin-left: 10px;
+  margin-right: 10px; */
+}
+
+.cardCreatedHeader {
+  font-size: 18px;
+  color: #ffa801;
+  margin-right: 10px;
+}
+
+.cardCreatedSubHeader {
+  font-size: 18px;
+  color: rgb(158, 158, 158);;
+  margin-right: 10px;
+}
+
+.cardHeader {
+  font-size: 26px;
+  color: #ffa801;
+  margin-right: 10px;
+}
+
+.cardData {
+  font-size: 25px;
+  color: rgb(158, 158, 158);
+  
 }
 
 /* 

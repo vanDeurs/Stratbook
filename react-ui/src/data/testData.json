@@ -2,7 +2,13 @@
     "user": {
         "name": "David",
         "strategies": [
-
+            {
+                "mapValue": "Mirage",
+                "nameValue": "A-split",
+                "summaryValue": "Three players throw default smokes on A. The other two players sneek underground and go up connector.",
+                "created": "2018/05/12",
+                "typeValue": "fullbuy"
+            }
         ]
     }
 }
