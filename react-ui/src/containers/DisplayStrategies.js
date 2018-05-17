@@ -144,7 +144,7 @@ export class DisplayStrategies extends Component {
         const year = dateObj.getUTCFullYear();
         const today = year + "/" + month + "/" + day;
 
-        return strategies.map(strategy => {
+        return strategies.map((strategy, i) => {
             // If the strategy created date is the same as the current date
             // We set the created header to "today"
             if (strategy.created === today){
@@ -156,7 +156,8 @@ export class DisplayStrategies extends Component {
                 <StrategyCard 
                     mapName={strategy.mapValue} 
                     strategyName={strategy.nameValue}  
-                    key={strategy.id} 
+                    // key={strategy.id} 
+                    key={i}
                     strategySummary={strategy.summaryValue}
                     strategyExplanation={strategy.explanationValue}
                     strategyId={strategy.id}

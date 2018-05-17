@@ -3,6 +3,8 @@ import { Button, Form, ControlLabel, FormControl, FormGroup, FormControlFeedback
 import ReactDOM         from 'react-dom';
 import '../../styles/index.css';
 import Modal from 'react-modal';
+import { FormErrors } from '../../utils/FormErrors';
+import { checkTextLength } from '../../utils/FormValidation';
 
 // For screen-readers
 Modal.setAppElement('#root')
@@ -19,18 +21,76 @@ export class StrategyFormModal extends Component {
             typeValue: '',
 
             // Error messages
-            mapErrorMessage: null,
-            nameErrorMessage: null,
-            summaryErrorMessage: null,
-            explanationErrorMessage: null,
-            typeErrorMessage: null,
-
-
+            mapErrorMessage: '',
+            nameErrorMessage: '',
+            summaryErrorMessage: '',
+            explanationErrorMessage: '',
+            typeErrorMessage: '',
         };
     };
 
     componentDidMount(){
     };
+
+    ////////////////////////////////////////////////////////////////
+    // Validation
+    ////////////////////////////////////////////////////////////////
+
+    // signupValidation
+    formValidation = () => {
+        let errors = [];
+
+        const {nameValue, mapValue, typeValue, summaryValue, explanationValue} = this.state;
+        const formInfo = {
+            nameValue,
+            mapValue,
+            typeValue,
+            summaryValue,
+            explanationValue
+        };
+
+        let errMsg = {
+            nameValue: '',
+            mapValue: '',
+            typeValue: '',
+            summaryValue: '',
+            explanationValue: '',
+        };
+        
+        if(!checkTextLength(formInfo.nameValue)){
+            errMsg.nameValue = 'A name of the strategy is required';
+        }
+        if(!(formInfo.mapValue)){
+            errMsg.mapValue = 'A map is required';
+        }
+        if(!(formInfo.typeValue)){
+            errMsg.typeValue = 'A type is required';
+        }
+        if(!checkTextLength(formInfo.summaryValue)){
+            errMsg.summaryValue = 'A summary is required';
+        }
+        if(!checkTextLength(formInfo.explanationValue)){
+            errMsg.explanationValue = 'An explanation is required';
+        }
+
+        this.setState({
+            nameErrorMessage: errMsg.nameValue,
+            mapErrorMessage: errMsg.mapValue,
+            typeErrorMessage: errMsg.typeValue,
+            summaryErrorMessage: errMsg.summaryValue,
+            explanationErrorMessage: errMsg.explanationValue,
+        });
+
+        // Run if no errors
+        console.log('errMsg:', errMsg);
+        for (let i in errMsg){
+            if(errMsg[i]) { 
+                console.log('current err message', errMsg[i]);
+                return false;
+            } 
+            return true;
+        }
+    }
 
     ////////////////////////////////////////////////////////////////
     // Handle change functions
@@ -66,6 +126,16 @@ export class StrategyFormModal extends Component {
         });
     };
 
+    clearForm = () => {
+        this.setState({
+            nameValue: '',
+            mapValue: '',
+            typeValue: '',
+            summaryValue: '',
+            explanationValue: ''
+        })
+    }
+
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
 
@@ -81,26 +151,23 @@ export class StrategyFormModal extends Component {
             summaryValue,
             explanationValue
         };
-        // This function is passed as a prop to DisplayStrategies.js
+
+        // We run the front end validation
+        const validation = this.formValidation()
+        if (!validation){
+            console.log('formErr', validation)
+            return
+        }
+
         // So that DisplayStrategies.js can access formInfo which is passed in as a parameter.
         // Because DisplayStrategies needs the form info for the StrategyCards.
         this.props.onSubmit(formInfo);
 
-        // Reset the form. May need to do this in DisplayStrategies, so it doesn't reset if the function doesn't go through. 
-        // Can do a callback to reset the state here from there.
+        // Clear form after submit
+        this.clearForm()
     };
-
-    // Error messages
     
     render(){
-
-        // Below is not used atm. Remove ?
-        const   mapErrorMessage         = this.props.mapErrorMessage            ? <p className="formErrorMessage">{this.state.mapErrorMessage}</p>          : null;
-        const   nameErrorMessage        = this.props.nameErrorMessage           ? <p className="formErrorMessage">{this.state.nameErrorMessage}</p>         : null;
-        const   summaryErrorMessage     = this.props.summaryErrorMessage        ? <p className="formErrorMessage">{this.state.summaryErrorMessage}</p>      : null;
-        const   typeErrorMessage        = this.props.typeErrorMessage           ? <p className="formErrorMessage">{this.state.typeErrorMessage}</p>         : null;
-        const   explanationErrorMessage = this.props.explanationErrorMessage    ? <p className="formErrorMessage">{this.state.explanationErrorMessage}</p>  : null;
-
         const form = (
             <form onSubmit={this.onSubmit} className="formContainer"> 
                 <FormGroup className="formGroup">
@@ -111,7 +178,9 @@ export class StrategyFormModal extends Component {
                         placeholder="Enter the strategy name"
                         onChange={this.handleNameChange}
                     />
-                    <ControlLabel className="formErrorMessage">{this.props.nameErrorMessage}</ControlLabel>
+                    <p className="formErrorMessage">
+                        {this.state.nameErrorMessage}
+                    </p>   
                 </FormGroup>
                 <FormGroup className="formGroup" controlId="formControlsSelect">
                     <ControlLabel className="formHeader">Map</ControlLabel>
@@ -126,8 +195,10 @@ export class StrategyFormModal extends Component {
                         <option value="Inferno">Inferno</option>
                         <option value="Train">Train</option>
                     </FormControl>
-                <ControlLabel className="formErrorMessage">{this.props.mapErrorMessage}</ControlLabel>
-                </FormGroup>
+                    <p className="formErrorMessage">
+                        {this.state.mapErrorMessage}
+                    </p>   
+               </FormGroup>
 
                 <FormGroup className="formGroup" controlId="formControlsSelectMultiple">
                     <ControlLabel className="formHeader">Type</ControlLabel>
@@ -139,20 +210,26 @@ export class StrategyFormModal extends Component {
                         <option value="Pistol">Pistol</option>
                         <option value="All">All</option>
                     </FormControl>
-                <ControlLabel className="formErrorMessage">{this.props.typeErrorMessage}</ControlLabel>
-                </FormGroup>
+                    <p className="formErrorMessage">
+                        {this.state.typeErrorMessage}
+                    </p>                
+                    </FormGroup>
 
                 <FormGroup className="formGroup" controlId="formControlsTextarea">
                     <ControlLabel className="formHeader">Summary</ControlLabel>
                     <FormControl componentClass="textarea" placeholder="Give a breif summary of the strategy" onChange={this.handleSummaryChange} />
-                <ControlLabel className="formErrorMessage">{this.props.summaryErrorMessage}</ControlLabel>
+                    <p className="formErrorMessage">
+                        {this.state.summaryErrorMessage}
+                    </p>   
                 </FormGroup>
                 
                 <FormGroup className="formGroup" controlId="formControlsTextarea">
                     <ControlLabel className="formHeader">Detailed explanation</ControlLabel>
                     <FormControl componentClass="textarea" placeholder="Explain the strategy in detail. Please use the strategy writing guide for structure" onChange={this.handleExplanationChange}/>
-                <ControlLabel className="formErrorMessage">{this.props.explanationErrorMessage}</ControlLabel>
-                </FormGroup>
+                    <p className="formErrorMessage">
+                        {this.state.explanationErrorMessage}
+                    </p>               
+                    </FormGroup>
 
                 <Button type="submit">Submit</Button>
             </form>
