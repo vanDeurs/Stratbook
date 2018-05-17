@@ -18,6 +18,7 @@
     "body-parser": "^1.18.2",
     "bootstrap": "^4.1.1",
     "express": "^4.14.1",
+    "font-awesome": "^4.7.0",
     "fs": "0.0.1-security",
     "nodemon": "^1.17.3",
     "prop-types": "^15.6.1",

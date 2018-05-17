@@ -43,6 +43,26 @@ body {
     font-weight: 500;
   }
 
+  /* 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Icons
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+.loadingIcon {
+  color: #fff;
+}
+
+.editStrategyIcon {
+  color: #0fbcf9;
+  font-size: 30px;
+  position: absolute; 
+  left: 74vw;
+  margin-top: 5px;
+}
+
 /* 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -261,6 +281,26 @@ STYLING FOR THE STRATEGIES PAGE (not it's components, just the container and stu
     flex-direction: column;
     margin: 0;
 }
+
+.emptyStrategyList {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.emptyStrategyListHeader {
+  font-size: 30px;
+  color: #333;
+  font-weight: 500;
+}
+
+.emptyStrategyListSubHeader {
+  font-size: 25px;
+  color: #333;
+  font-weight: 500;
+}
+
 
 /* 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -536,6 +576,14 @@ h2 {
   font-size: 25px;
   color: rgb(158, 158, 158);
   
+}
+
+.editIconWrapper {
+  border: 1px solid red;
+  height: 100px;
+  /* position: absolute; */
+  right: 10%;
+  top: 25%;
 }
 
 /* 

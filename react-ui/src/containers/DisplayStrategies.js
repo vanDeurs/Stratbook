@@ -1,7 +1,6 @@
 import React, { Component }     from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import axois from 'axios';
-
 import '../styles/index.css';
 
 import {MiddlePicker}   from '../containers/MiddlePicker';
@@ -144,6 +143,16 @@ export class DisplayStrategies extends Component {
         const year = dateObj.getUTCFullYear();
         const today = year + "/" + month + "/" + day;
 
+        // If there are no strategies - return some sad text
+        if (strategies.length < 1){
+            return (
+                <div className="emptyStrategyList">
+                    <h2 className="emptyStrategyListHeader">You don't have any strategies yet</h2>
+                    <h3 className="emptyStrategyListSubHeader">Go ahead and add one!</h3>
+                </div>
+            )
+        }
+
         return strategies.map(strategy => {
             // If the strategy created date is the same as the current date
             // We set the created header to "today"
@@ -212,7 +221,7 @@ export class DisplayStrategies extends Component {
                 <div className="bottom">
                 { 
                       this.state.loading 
-                  ?   <h1>{this.state.textDisplay}</h1>
+                  ?    <i className="fa fa-cog fa-spin fa-5x fa-fw loadingIcon"></i>
                   :   this.renderStrategyCards()
                 }
                 </div>

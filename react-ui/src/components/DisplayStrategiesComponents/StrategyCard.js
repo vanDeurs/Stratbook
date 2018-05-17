@@ -1,6 +1,7 @@
 import React, { Component }     from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import FontAwesome from 'react-fontawesome';
 
 
 import ReactDOM         from 'react-dom';
@@ -31,6 +32,7 @@ export class StrategyCard extends Component {
 
         return(
             <div className="strategyCardContainer">
+                <i class="fa fa-pencil editStrategyIcon fa-4x"></i>
                 <div className="cardTopWrapper">
                     <div className="cardNameDiv"> 
                         <h3 className="cardHeader">Map: </h3>
