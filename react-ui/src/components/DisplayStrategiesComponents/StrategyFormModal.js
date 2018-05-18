@@ -37,7 +37,7 @@ export class StrategyFormModal extends Component {
 
     // signupValidation
     formValidation = () => {
-        let errors = [];
+        const errors = [];
 
         const {nameValue, mapValue, typeValue, summaryValue, explanationValue} = this.state;
         const formInfo = {
@@ -48,47 +48,51 @@ export class StrategyFormModal extends Component {
             explanationValue
         };
 
-        let errMsg = {
-            nameValue: '',
-            mapValue: '',
-            typeValue: '',
-            summaryValue: '',
-            explanationValue: '',
+        const errMsg = {
+            name: '',
+            map: '',
+            type: '',
+            summary: '',
+            explanation: '',
         };
         
         if(!checkTextLength(formInfo.nameValue)){
-            errMsg.nameValue = 'A name of the strategy is required';
+            errMsg.name = 'A name is required';
         }
         if(!(formInfo.mapValue)){
-            errMsg.mapValue = 'A map is required';
+            errMsg.map = 'A map is required';
         }
         if(!(formInfo.typeValue)){
-            errMsg.typeValue = 'A type is required';
+            errMsg.type = 'A type is required';
         }
         if(!checkTextLength(formInfo.summaryValue)){
-            errMsg.summaryValue = 'A summary is required';
+            errMsg.summary = 'A summary is required';
         }
         if(!checkTextLength(formInfo.explanationValue)){
-            errMsg.explanationValue = 'An explanation is required';
+            errMsg.explanation = 'An explanation is required';
         }
 
         this.setState({
-            nameErrorMessage: errMsg.nameValue,
-            mapErrorMessage: errMsg.mapValue,
-            typeErrorMessage: errMsg.typeValue,
-            summaryErrorMessage: errMsg.summaryValue,
-            explanationErrorMessage: errMsg.explanationValue,
+            nameErrorMessage: errMsg.name,
+            mapErrorMessage: errMsg.map,
+            typeErrorMessage: errMsg.type,
+            summaryErrorMessage: errMsg.summary,
+            explanationErrorMessage: errMsg.explanation,
         });
 
-        // Run if no errors
-        console.log('errMsg:', errMsg);
-        for (let i in errMsg){
-            if(errMsg[i]) { 
-                console.log('current err message', errMsg[i]);
+        // If any errors found, abort and return false.
+        // Else, return true.
+  
+        if (    errMsg.name.length > 0 
+            ||  errMsg.map.length > 0 
+            ||  errMsg.type.length > 0 
+            ||  errMsg.summary.length > 0 
+            ||  errMsg.explanation.length > 0){
+                console.log('error found, abort.')
                 return false;
-            } 
-            return true;
         }
+        console.log('no errors found. continue')
+        return true;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -126,6 +130,7 @@ export class StrategyFormModal extends Component {
     };
 
     clearForm = () => {
+        console.log('form has been cleared')
         this.setState({
             nameValue: '',
             mapValue: '',
@@ -140,6 +145,7 @@ export class StrategyFormModal extends Component {
 
     // Runs when the form below is submitted
     onSubmit = (e) => {
+        console.log('Form has been submitted')
         // Prevents page from reloading
         e.preventDefault();
         const {nameValue, mapValue, typeValue, summaryValue, explanationValue} = this.state;
@@ -156,14 +162,17 @@ export class StrategyFormModal extends Component {
         if (!validation){
             console.log('formErr', validation)
             return
+        } else {
+            console.log('validation: ', validation);
+            console.log('else has been reached')
+            // So that DisplayStrategies.js can access formInfo which is passed in as a parameter.
+            // Because DisplayStrategies needs the form info for the StrategyCards.
+            this.props.onSubmit(formInfo);
+    
+            // Clear form after submit
+            this.clearForm()
         }
 
-        // So that DisplayStrategies.js can access formInfo which is passed in as a parameter.
-        // Because DisplayStrategies needs the form info for the StrategyCards.
-        this.props.onSubmit(formInfo);
-
-        // Clear form after submit
-        this.clearForm()
     };
     
     render(){
@@ -216,7 +225,7 @@ export class StrategyFormModal extends Component {
 
                 <FormGroup className="formGroup" controlId="formControlsTextarea">
                     <ControlLabel className="formHeader">Summary</ControlLabel>
-                    <FormControl componentClass="textarea" placeholder="Give a breif summary of the strategy" onChange={this.handleSummaryChange} />
+                    <FormControl componentClass="textarea" value={this.state.summaryValue} placeholder="Give a breif summary of the strategy" onChange={this.handleSummaryChange} />
                     <p className="formErrorMessage">
                         {this.state.summaryErrorMessage}
                     </p>   
@@ -224,7 +233,7 @@ export class StrategyFormModal extends Component {
                 
                 <FormGroup className="formGroup" controlId="formControlsTextarea">
                     <ControlLabel className="formHeader">Detailed explanation</ControlLabel>
-                    <FormControl componentClass="textarea" placeholder="Explain the strategy in detail. Please use the strategy writing guide for structure" onChange={this.handleExplanationChange}/>
+                    <FormControl componentClass="textarea" value={this.state.explanationValue} placeholder="Explain the strategy in detail. Please use the strategy writing guide for structure" onChange={this.handleExplanationChange}/>
                     <p className="formErrorMessage">
                         {this.state.explanationErrorMessage}
                     </p>               
