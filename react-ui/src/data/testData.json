@@ -2,6 +2,13 @@
     "user": {
         "name": "David",
         "strategies": [
+            {
+                "nameValue": "Rush B",
+                "mapValue": "Mirage",
+                "typeValue": "Eco",
+                "summaryValue": "Everyone buys a tec-9 and rush B!!",
+                "created": "today"
+            }
 
         ]
     }

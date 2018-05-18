@@ -8,6 +8,7 @@ import { RenderSetups }         from './components/RenderSetups';
 import { BrowserRouter, Route, HashRouter, Link, Switch } from 'react-router-dom';
 import {Layout} from './components/Layout';
 import {NotFound} from './components/NotFound';
+import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.css';
 // import 'bootstrap/dist/css/bootstrap-theme.min.css';
 
