@@ -166,12 +166,14 @@ export class DisplayStrategies extends Component {
                     mapName={strategy.mapValue} 
                     strategyName={strategy.nameValue}  
                     // key={strategy.id} 
-                    key={i}
+                    key={strategy.id}
                     strategySummary={strategy.summaryValue}
                     strategyExplanation={strategy.explanationValue}
                     strategyId={strategy.id}
                     strategyType={strategy.typeValue}
                     strategyCreated={strategy.created}
+                    // Buttons
+                    editStrategyButton={()=>alert("Hello")}
                 />
                 );
             }

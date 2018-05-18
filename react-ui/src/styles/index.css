@@ -58,11 +58,25 @@ Icons
 
 .editStrategyIcon {
   color: #0fbcf9;
-  font-size: 30px;
-  position: absolute; 
-  left: 74vw;
-  margin-top: 5px;
+  height: 0%;
+  margin: 5px 5px 0 0;
+  background: none;
 }
+
+.editStrategyIcon:hover {
+  color: #ffa801;
+  background: none;
+  cursor: pointer;
+
+}
+
+.editStrategyIcon:checked {
+  color: #ffa801;
+  background: none;
+
+}
+
+
 
 /* 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -475,6 +489,8 @@ STYLING FOR THE STRATEGY CARD
     border-radius: 2px;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
     /* padding: 2vh 3vw; */
 }
 
@@ -511,6 +527,7 @@ h2 {
   align-items: center;
   flex-direction: row;
   height: 50%;
+  width: 100%;
   border-bottom: 1px solid lightgrey;
 }
 
@@ -521,11 +538,12 @@ h2 {
   align-items: center;
   flex-direction: row;
   height: 50%;
-  padding-left: 7.5%;
+  /* padding-left: 7.5%; */
+  width: 100%;
 }
 
 .cardCreatedDiv {
-  width: 25%;
+  width: 33.333%;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -534,7 +552,7 @@ h2 {
 }
 
 .cardSummaryDiv {
-  width: 72.5%;
+  width: 66.666%;
   height: 100%;
   display: flex;
   justify-content: space-around;
@@ -577,14 +595,6 @@ h2 {
   font-size: 25px;
   color: rgb(158, 158, 158);
   
-}
-
-.editIconWrapper {
-  border: 1px solid red;
-  height: 100px;
-  /* position: absolute; */
-  right: 10%;
-  top: 25%;
 }
 
 /* 
