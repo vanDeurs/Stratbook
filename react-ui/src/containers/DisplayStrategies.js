@@ -57,7 +57,8 @@ export class DisplayStrategies extends Component {
         this.fetchWithErrorHandling('/:map/strategies')
           .then(res => res.json())
           .then(strategies => {
-              this.setState({ strategies, loading: false});
+              this.setState({strategies, loading: false});
+              console.log('strategies', this.state.strategies);
           }).catch(err => {
               console.log('Err', err);
               this.setState({ textDisplay: 'Sorry - something went wrong.' });
@@ -84,6 +85,7 @@ export class DisplayStrategies extends Component {
             if (res.ok){
                 res.json()
                 .then(updatedStrategy => {
+                    console.log('updated strategy', updatedStrategy)
                     // We make a variable that contains the current strategies stored in state plus the updatedStrategy.
                     const newStrategies = this.state.strategies.concat(updatedStrategy);
                     // We set the newStrategies to be the strategies.
@@ -92,6 +94,7 @@ export class DisplayStrategies extends Component {
                         addStrategyModalVisible: false,
                         // Here we need to reset the state in the child StrategyFormModa with a callback.
                     })
+                    console.log('updated strategy 2', this.state.strategies)
                 })
             } else {
                 res.json()
@@ -100,6 +103,8 @@ export class DisplayStrategies extends Component {
                         nameErrorMessage: err.message,
                     });
                     // alert('Failed to add strategy: ' + err.message);
+                }).catch(err => {
+                    console.log(err.message);
                 })
             }
         }).catch(err => {
@@ -108,28 +113,18 @@ export class DisplayStrategies extends Component {
             });
             // alert('Error in sending data to server: ' + err.message);
         });
-
-    };       
-
-    // decideDate = () => {
-    //     // Date stuff - so it matches the backend format
-    //     const dateObj = new Date();
-    //     const month = dateObj.getUTCMonth() + 1; // months from 1-12
-    //     const day = dateObj.getUTCDate();
-    //     const year = dateObj.getUTCFullYear();
-    //     const today = year + "/" + month + "/" + day;
-
-    //     console.log('date', this.state.strategies)
-    //     this.state.strategies.forEach(strategy => {
-    //         if(strategy.created === today){
-    //             strategy.created = "today"
-    //             console.log('Whohooo', strategy.created)
-    //         } else {
-    //             strategy.created = strategy.created
-    //         }
-    //     })
-    // }
-
+    };      
+    
+    // DELETE STRATEGY CARD FUNCTION
+    deleteStrategy = (id) => {
+        fetch(`/:map/strategies/${id}`, {
+            method: 'DELETE',
+            body: id
+        })
+        .then(()=> {
+            this.fetchStrategies()
+        });
+}
 
     // This function goes through the data that is stored in the state.
     // And then returns a card component for each strategy
@@ -153,27 +148,28 @@ export class DisplayStrategies extends Component {
             )
         }
 
+        console.log('strategiesxx', this.state.strategies);
         return strategies.map(strategy => {
             // If the strategy created date is the same as the current date
             // We set the created header to "today"
             if (strategy.created === today){
                 strategy.created = 'today'
             }
-            console.log('strategies: ', strategies)
-            console.log('strategy.created', strategy.created)
+            console.log('strategy', strategy);
             return (
                 <StrategyCard 
                     mapName={strategy.mapValue} 
                     strategyName={strategy.nameValue}  
-                    // key={strategy.id} 
                     key={strategy.id}
                     strategySummary={strategy.summaryValue}
                     strategyExplanation={strategy.explanationValue}
                     strategyId={strategy.id}
                     strategyType={strategy.typeValue}
                     strategyCreated={strategy.created}
+
                     // Buttons
                     editStrategyButton={()=>alert("Hello")}
+                    deleteStrategyButton={() => this.deleteStrategy(strategy.id)}
                 />
                 );
             }
