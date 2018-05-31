@@ -3,7 +3,7 @@ import { Button, Form, ControlLabel, FormControl, FormGroup, FormControlFeedback
 import ReactDOM         from 'react-dom';
 import '../../styles/index.css';
 import Modal from 'react-modal';
-import { checkTextLength } from '../../utils/FormValidation';
+import { checkTextLength } from '../../utils/TextValidation';
 
 // For screen-readers
 Modal.setAppElement('#root')

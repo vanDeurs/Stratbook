@@ -73,7 +73,25 @@ Icons
 .editStrategyIcon:checked {
   color: #ffa801;
   background: none;
+}
 
+.deleteStrategyIcon {
+  color: #db1313;
+  height: 0%;
+  margin: 5px 5px 0 0;
+  background: none;
+}
+
+.deleteStrategyIcon:hover {
+  color: #4d0505;
+  background: none;
+  cursor: pointer;
+
+}
+
+.deleteStrategyIcon:checked {
+  color: #4d0505;
+  background: none;
 }
 
 
