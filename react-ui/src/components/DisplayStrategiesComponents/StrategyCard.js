@@ -53,8 +53,9 @@ export class StrategyCard extends Component {
                     </div>
                     <div className="cardCreatedDiv"> 
                         <h3 className="cardCreatedHeader">Created: </h3>
-                        <h3 className="cardCreatedSubHeader"> {strategyCreated}</h3>
+                        <h3 className="cardCreatedSubHeader">{strategyCreated}</h3>
                     </div>
+                    <i className="fa fa-times fa-4x deleteStrategyIcon" onClick={this.props.deleteStrategyButton}></i>
                 </div>
             </div>
         );
