@@ -42,9 +42,23 @@ router.get('/', (req, res) => {
   });
 });
 
+// GET a single strategy
+router.get('/:id', (req, res) => {
+    // Get all strategies
+    db.get(`SELECT * FROM Strategies WHERE id = ${req.params.id};`, (err, row) => {
+      if (err){
+        console.log('Failed retriving strategy.');
+        console.log('err',err);
+      }
+      console.log('Successfully retrived strategy by id!');
+      console.log('row', row);
+      res.send(row);
+    });
+  });
+
 
 // POST STRATEGY (add validation middleware)
-router.post('/', (req, res) => {
+  router.post('/', (req, res) => {
 
   // Date stuff - all saved in a single const
   const dateObj = new Date();
@@ -94,6 +108,38 @@ router.delete('/:id', (req, res) => {
     console.log('Deleted, row: ', row)
     res.status(204).send(row);
   });
-})
+});
+
+// PUT
+router.put('/:id', (req, res) => {
+  db.run(`UPDATE Strategies 
+          SET nameValue = $nameValue, mapValue = $mapValue, typeValue = $typeValue, summaryValue = $summaryValue, explanationValue = $explanationValue
+          WHERE id = ${req.params.id}
+          `, {
+            $nameValue: req.body.nameValue,
+            $mapValue: req.body.mapValue,
+            $typeValue: req.body.typeValue,
+            $summaryValue: req.body.summaryValue,
+            $explanationValue: req.body.explanationValue,
+          }, 
+          {
+            function(err) {
+              if (err){
+                res.sendStatus(500);
+                return console.log('error: ', err.message);
+              }
+              db.get(`SELECT * FROM Strategies WHERE id = ${this.lastID}`, (err, row) => {
+                if (!row) {
+                  console.error('Couldnt access edited row');
+                  console.log(err);
+                  return res.sendStatus(500);
+                }
+                console.log(`A row has been edited:  ${JSON.stringify(row)}`);
+                res.status(200).send(row);
+              });
+            }
+          }
+        )
+});
 
 module.exports = router;
