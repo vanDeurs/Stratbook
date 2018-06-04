@@ -23,14 +23,10 @@ export class TopTable extends Component {
 
     render(){
 
-        const addStrategyButton = () => {
-            this.props.addStrategyButton()
-        }
-
         return(
             <div className="tableContainer">
                 <div className="topTableLeft"> 
-                    <AddStrategyButton onClick={addStrategyButton} />
+                    <AddStrategyButton onClick={this.props.addStrategyButton} />
                     <FilterDisplay filter="Mirage"/>
                 </div>
                 <div className="topTableMiddle"> 

@@ -29,7 +29,6 @@ class App extends Component {
                     <Route exact path='/' component={Home}/>
                     <Route exact path='/:map' component={RenderMap}/>
                     <Route exact path='/:map/strategies' component={RenderStrategies}/>
-                    {/* <Route exact path='/:map/strategies/add' component={DisplayStrategies}/> */}
                     <Route exact path='/:map/setups' component={RenderSetups}/>
                     <Route path='*' component={NotFound}/>
                 </Switch>
