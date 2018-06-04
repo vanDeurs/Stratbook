@@ -22,6 +22,7 @@ export class DisplayStrategies extends Component {
             addStrategyModalVisible: false,
             formInfo: null,
             createdDate: '',
+            formEditMode: false,
 
             // Error messages
             mapErrorMessage: null,
@@ -124,7 +125,14 @@ export class DisplayStrategies extends Component {
         .then(()=> {
             this.fetchStrategies()
         });
-}
+    }
+
+    openStrategyModalOnEdit = () => {
+        this.setState({
+            formEditMode: false,
+            addStrategyModalVisible: true
+        });
+    }
 
     // This function goes through the data that is stored in the state.
     // And then returns a card component for each strategy
@@ -150,6 +158,7 @@ export class DisplayStrategies extends Component {
 
         console.log('strategiesxx', this.state.strategies);
         return strategies.map(strategy => {
+            const {formEditMode} = this.state;
             // If the strategy created date is the same as the current date
             // We set the created header to "today"
             if (strategy.created === today){
@@ -168,7 +177,7 @@ export class DisplayStrategies extends Component {
                     strategyCreated={strategy.created}
 
                     // Buttons
-                    editStrategyButton={()=>alert("Hello")}
+                    editStrategyButton={this.openStrategyModalOnEdit}
                     deleteStrategyButton={() => this.deleteStrategy(strategy.id)}
                 />
                 );
@@ -183,8 +192,6 @@ export class DisplayStrategies extends Component {
             isOpen={this.state.addStrategyModalVisible}
             onRequestClose={this.closeAddStrategyModal}
             onSubmit={this.submitForm}
-            // Error messages
-            nameErrorMessage={this.state.nameErrorMessage}
         />
       )
   };

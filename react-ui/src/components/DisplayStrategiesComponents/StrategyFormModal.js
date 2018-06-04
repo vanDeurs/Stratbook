@@ -158,7 +158,7 @@ export class StrategyFormModal extends Component {
         };
 
         // We run the front end validation
-        const validation = this.formValidation()
+        const validation = this.formValidation();
         if (!validation){
             console.log('formErr', validation)
             return
@@ -170,9 +170,8 @@ export class StrategyFormModal extends Component {
             this.props.onSubmit(formInfo);
     
             // Clear form after submit
-            this.clearForm()
+            this.clearForm();
         }
-
     };
     
     render(){
