@@ -4,6 +4,7 @@ import ReactDOM         from 'react-dom';
 import '../../styles/index.css';
 import Modal from 'react-modal';
 import { checkTextLength } from '../../utils/TextValidation';
+import {fetchWithErrorHandling, handleErrors} from '../../utils/FetchErrorHandling';
 
 // For screen-readers
 Modal.setAppElement('#root')
@@ -29,6 +30,7 @@ export class EditStrategyFormModal extends Component {
     };
 
     componentDidMount(){
+        this.fetchStrategyDetails()
     };
 
     ////////////////////////////////////////////////////////////////
@@ -129,19 +131,30 @@ export class EditStrategyFormModal extends Component {
         });
     };
 
-    clearForm = () => {
-        console.log('form has been cleared')
-        this.setState({
-            nameValue: '',
-            mapValue: '',
-            typeValue: '',
-            summaryValue: '',
-            explanationValue: ''
-        })
-    }
+    ////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
 
-    ////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////
+    fetchStrategyDetails = () => {
+        let strategyId = this.props.id;
+        fetchWithErrorHandling(`/:map/strategies/${strategyId}`)
+          .then(res => res.json())
+          .then(res => {
+              this.setState({
+                  mapValue: res.mapValue,
+                  nameValue: res.nameValue,
+                  typeValue: res.typeValue,
+                  summaryValue: res.summaryValue,
+                  explanationValue: res.explanationValue
+              });
+              console.log('map: ', this.state.mapValue);
+              console.log('name: ', this.state.nameValue);
+              console.log('type: ', this.state.typeValue);
+              console.log('summary: ', this.state.summaryValue);
+              console.log('explanation: ', this.state.explanationValue);
+          }).catch(err => {
+              console.log('Err', err);
+          });
+      };
 
     // Runs when the form below is submitted
     onSubmit = (e) => {
@@ -149,7 +162,7 @@ export class EditStrategyFormModal extends Component {
         // Prevents page from reloading
         e.preventDefault();
         const {nameValue, mapValue, typeValue, summaryValue, explanationValue} = this.state;
-        const formInfo = {
+        const newFormInfo = {
             nameValue,
             mapValue,
             typeValue,
@@ -167,10 +180,7 @@ export class EditStrategyFormModal extends Component {
             console.log('else has been reached')
             // So that DisplayStrategies.js can access formInfo which is passed in as a parameter.
             // Because DisplayStrategies needs the form info for the StrategyCards.
-            this.props.onSubmit(formInfo);
-    
-            // Clear form after submit
-            this.clearForm();
+            this.props.onEditSubmit(newFormInfo);
         }
     };
     
@@ -192,7 +202,7 @@ export class EditStrategyFormModal extends Component {
                 <FormGroup className="formGroup" controlId="formControlsSelect">
                     <ControlLabel className="formHeader">Map</ControlLabel>
                     <FormControl componentClass="select" placeholder="Select" onChange={this.handleMapChange}>
-                        <option value="select">Select Map</option>
+                        <option value="select">{this.state.mapValue || "Select map"}</option>
                         <option value="Mirage">Mirage</option>
                         <option value="Cache">Cache</option>
                         <option value="Dust2">Dust2</option>
@@ -208,9 +218,9 @@ export class EditStrategyFormModal extends Component {
                </FormGroup>
 
                 <FormGroup className="formGroup" controlId="formControlsSelectMultiple">
-                    <ControlLabel className="formHeader">Type</ControlLabel>
+                    <ControlLabel className="formHeader">Select Type</ControlLabel>
                     <FormControl componentClass="select" onChange={this.handleTypeChange}> {/* Make it a multi-pick in the future. Just add 'multiple' */}
-                        <option value="select">Select Type</option>
+                        <option value="select">{this.state.typeValue || "Select Type"}</option>
                         <option value="Fullbuy">Fullbuy</option>
                         <option value="Eco">Eco</option>
                         <option value="Halfbuy">Halfbuy</option>
@@ -238,7 +248,7 @@ export class EditStrategyFormModal extends Component {
                     </p>               
                     </FormGroup>
 
-                <Button type="submit">Submit</Button>
+                <Button type="submit">Edit and Submit</Button>
             </form>
         );
 
