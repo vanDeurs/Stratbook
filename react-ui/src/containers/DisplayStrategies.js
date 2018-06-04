@@ -11,6 +11,8 @@ import {App}            from '../index';
 import { StrategyCard } from '../components/DisplayStrategiesComponents/StrategyCard';
 import { error } from 'util';
 import { StrategyFormModal } from '../components/DisplayStrategiesComponents/StrategyFormModal';
+import { EditStrategyFormModal } from '../components/DisplayStrategiesComponents/EditStrategyFormModal';
+import {fetchWithErrorHandling, handleErrors } from '../utils/FetchErrorHandling';
 
 export class DisplayStrategies extends Component {
     constructor(props){
@@ -22,7 +24,7 @@ export class DisplayStrategies extends Component {
             addStrategyModalVisible: false,
             formInfo: null,
             createdDate: '',
-            formEditMode: false,
+            editStrategyModalVisible: false,
 
             // Error messages
             mapErrorMessage: null,
@@ -40,22 +42,14 @@ export class DisplayStrategies extends Component {
     };
 
 
-    // This handles errors
-    handleErrors = (response) => {
-      if (!response.ok) throw new Error(response.statusText);
-      return response;
-    };
-    
-    // This handles fetching errors
-    fetchWithErrorHandling = (input, init) => {
-      return fetch(input, init)
-        .then(this.handleErrors)
-    };
+    //////////////////////////////////////////////////////////////////////
+    ///////////////////////// C R U D STARTS HERE/////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
     // Here we use our custom error handler to fetch the data from the backend.
     // The data fetched is the strategies. (could be more in the future)
     fetchStrategies = () => {
-        this.fetchWithErrorHandling('/:map/strategies')
+        fetchWithErrorHandling('/:map/strategies')
           .then(res => res.json())
           .then(strategies => {
               this.setState({strategies, loading: false});
@@ -73,11 +67,9 @@ export class DisplayStrategies extends Component {
       // Here we use the createAPI to create a strategy. 
       // The body is the form info that we got from StrategyFormModal.
     submitForm = (dataFromForm) => {
-        // Store the pulled data in this.state.formInfo
         this.setState({formInfo: dataFromForm});
-
         // We fetch the data.
-        fetch('/:map/strategies', {
+        fetchWithErrorHandling('/:map/strategies', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dataFromForm)
@@ -85,17 +77,12 @@ export class DisplayStrategies extends Component {
         .then(res => {
             if (res.ok){
                 res.json()
-                .then(updatedStrategy => {
-                    console.log('updated strategy', updatedStrategy)
-                    // We make a variable that contains the current strategies stored in state plus the updatedStrategy.
-                    const newStrategies = this.state.strategies.concat(updatedStrategy);
-                    // We set the newStrategies to be the strategies.
+                .then(newStrategy => {
+                    const newStrategies = this.state.strategies.concat(newStrategy);
                     this.setState({ 
                         strategies: newStrategies,
                         addStrategyModalVisible: false,
-                        // Here we need to reset the state in the child StrategyFormModa with a callback.
                     })
-                    console.log('updated strategy 2', this.state.strategies)
                 })
             } else {
                 res.json()
@@ -103,7 +90,6 @@ export class DisplayStrategies extends Component {
                     this.setState({
                         nameErrorMessage: err.message,
                     });
-                    // alert('Failed to add strategy: ' + err.message);
                 }).catch(err => {
                     console.log(err.message);
                 })
@@ -118,7 +104,7 @@ export class DisplayStrategies extends Component {
     
     // DELETE STRATEGY CARD FUNCTION
     deleteStrategy = (id) => {
-        fetch(`/:map/strategies/${id}`, {
+        fetchWithErrorHandling(`/:map/strategies/${id}`, {
             method: 'DELETE',
             body: id
         })
@@ -126,26 +112,35 @@ export class DisplayStrategies extends Component {
             this.fetchStrategies()
         });
     }
-
-    openStrategyModalOnEdit = () => {
-        this.setState({
-            formEditMode: false,
-            addStrategyModalVisible: true
-        });
+    
+    
+    editStrategy = (newDetails) => {
+        let strategyId = 20;
+        fetchWithErrorHandling(`/:map/strategies/${strategyId}`, {
+            method: 'PUT',
+            body: JSON.stringify(newDetails),
+            headers: {'Content-Type': 'application/json'}
+        })
+        .then(() => this.fetchStrategies())
     }
-
+    
+    
+    //////////////////////////////////////////////////////////////////////
+    ///////////////////////// C R U D STOPS HERE /////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    
     // This function goes through the data that is stored in the state.
     // And then returns a card component for each strategy
     renderStrategyCards = () => {
-        const {strategies} = this.state
-
+        const {strategies} = this.state;
+        
         // Date stuff - move this to a separate function
         const dateObj = new Date();
         const month = dateObj.getUTCMonth() + 1; // months from 1-12
         const day = dateObj.getUTCDate();
         const year = dateObj.getUTCFullYear();
         const today = year + "/" + month + "/" + day;
-
+        
         // If there are no strategies - return some sad text
         if (strategies.length < 1){
             return (
@@ -155,7 +150,7 @@ export class DisplayStrategies extends Component {
                 </div>
             )
         }
-
+        
         console.log('strategiesxx', this.state.strategies);
         return strategies.map(strategy => {
             const {formEditMode} = this.state;
@@ -175,53 +170,69 @@ export class DisplayStrategies extends Component {
                     strategyId={strategy.id}
                     strategyType={strategy.typeValue}
                     strategyCreated={strategy.created}
-
+                    
                     // Buttons
-                    editStrategyButton={this.openStrategyModalOnEdit}
+                    editStrategyButton={this.openOrCloseEditStrategyModal}
                     deleteStrategyButton={() => this.deleteStrategy(strategy.id)}
                 />
-                );
-            }
-        );
-    };
-
-  // Modal for adding strategies
-  addStrategyModal = () => {
-      return (
-        <StrategyFormModal 
-            isOpen={this.state.addStrategyModalVisible}
-            onRequestClose={this.closeAddStrategyModal}
-            onSubmit={this.submitForm}
-        />
-      )
-  };
-
-  // Open Add Strategy Modal function
-  openAddStrategyModal = () => {
-    this.setState({
-        addStrategyModalVisible: true
-    })
-  };
-
-  // Close Add Strategy Modal function
-  closeAddStrategyModal = () => {
-    this.setState({
-        addStrategyModalVisible: false
-    })
+            );
+        }
+    );
 };
 
-  // Function that runs when we click the + button
-  addStrategyButton = () => {
-    this.openAddStrategyModal()
-  };
+    openOrCloseEditStrategyModal = () => {
+        this.state.editStrategyModalVisible 
+        ? this.setState({
+            editStrategyModalVisible: false
+        })
+        : this.setState({
+            editStrategyModalVisible: true
+        })
+    }
+
+    // Open Add Strategy Modal function
+    openOrCloseAddStrategyModal = () => {
+        this.state.addStrategyModalVisible 
+        ? this.setState({
+            addStrategyModalVisible: false
+        })
+        : this.setState({
+            addStrategyModalVisible: true
+        })
+    };
+    
+
+    // Modal for editing strategies
+    editStrategyModal = () => {
+        return (
+            <EditStrategyFormModal 
+                isOpen={this.state.editStrategyModalVisible}
+                onEditSubmit={this.editStrategy}
+                onRequestClose={this.openOrCloseEditStrategyModal}
+                id={20}
+            />
+        )
+    }
+
+    // Modal for adding strategies
+    addStrategyModal = () => {
+        return (
+            <StrategyFormModal 
+                isOpen={this.state.addStrategyModalVisible}
+                onRequestClose={this.openOrCloseAddStrategyModal}
+                onSubmit={this.submitForm}
+            />
+        )
+    };
 
     render(){
         return(
             <div className="strategiesContainer">
                 {this.addStrategyModal()}
+                {this.editStrategyModal()}
                 <div className="top">
                     <TopTable 
-                        addStrategyButton={this.addStrategyButton}
+                        addStrategyButton={this.openOrCloseAddStrategyModal}
                     />
                 </div>
                 <div className="bottom">
