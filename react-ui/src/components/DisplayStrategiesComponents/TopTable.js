@@ -30,7 +30,7 @@ export class TopTable extends Component {
         return(
             <div className="tableContainer">
                 <div className="topTableLeft"> 
-                    <AddStrategyButton onClick={addStrategyButton}/>
+                    <AddStrategyButton onClick={addStrategyButton} />
                     <FilterDisplay filter="Mirage"/>
                 </div>
                 <div className="topTableMiddle"> 

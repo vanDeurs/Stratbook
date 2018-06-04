@@ -10,6 +10,7 @@ import {Layout} from './components/Layout';
 import {NotFound} from './components/NotFound';
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import { DisplayStrategies } from './containers/DisplayStrategies.js';
 // import 'bootstrap/dist/css/bootstrap-theme.min.css';
 
 
@@ -28,6 +29,7 @@ class App extends Component {
                     <Route exact path='/' component={Home}/>
                     <Route exact path='/:map' component={RenderMap}/>
                     <Route exact path='/:map/strategies' component={RenderStrategies}/>
+                    {/* <Route exact path='/:map/strategies/add' component={DisplayStrategies}/> */}
                     <Route exact path='/:map/setups' component={RenderSetups}/>
                     <Route path='*' component={NotFound}/>
                 </Switch>

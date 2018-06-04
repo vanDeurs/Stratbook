@@ -1,6 +1,5 @@
 const express = require('express');
 const sqlite3 = require('sqlite3');
-const testData = require('../../src/data/testData.json');
 const router = express.Router()
 const path = require('path');
 const formValidation = require('./validation');

@@ -198,9 +198,9 @@ export class DisplayStrategies extends Component {
 
   // Open Add Strategy Modal function
   openAddStrategyModal = () => {
-      this.setState({
-          addStrategyModalVisible: true
-      })
+    this.setState({
+        addStrategyModalVisible: true
+    })
   };
 
   // Close Add Strategy Modal function
@@ -212,7 +212,7 @@ export class DisplayStrategies extends Component {
 
   // Function that runs when we click the + button
   addStrategyButton = () => {
-      this.openAddStrategyModal()
+    this.openAddStrategyModal()
   };
 
     render(){
