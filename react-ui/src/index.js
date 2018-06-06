@@ -38,4 +38,6 @@ class App extends Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// I included the BrowserRouter so that I could use NavLinks in the navigationbar. 
+// I couldn't find another solution.
+ReactDOM.render(<BrowserRouter><App /></BrowserRouter>, document.getElementById('root'));

@@ -2,10 +2,7 @@ import React, { Component }     from 'react';
 import ReactDOM         from 'react-dom';
 import {App}            from '../index';
 import '../styles/index.css';
-import { Link} from 'react-router-dom';
-import {Bootstrap, Navbar, NavDropdown, MenuItem, Nav, NavbarHeader, NavItem} from 'react-bootstrap';
-// require("react-bootstrap/lib/NavbarHeader")
-// import {Navbar, NavItem, Icon} from 'react-materialize'; // Will use someday
+import {Link, NavLink} from 'react-router-dom';
 
 export class Header extends Component {
     constructor(props){
@@ -15,33 +12,24 @@ export class Header extends Component {
         }
     }
 
-    burgerToggle = () => {
-        let linksEl = document.querySelector('.narrowLinks');
-        if (linksEl.style.display === 'block') {
-            linksEl.style.display = 'none';
-        } else {
-            linksEl.style.display = 'block';
-        }
-    }
-
     render(){
         return(
             <nav>
             <div className="navWide">
                 <div className="wideDiv">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
+                    <NavLink to='/' activeClassName='hurray'>Home</NavLink>
+                    {/* <NavLink to='/' activeClassName='hurray'>React</NavLink> */}
+                    {/* <NavLink to='/react' activeClassName='hurray'>React</NavLink> */}
                 </div>
             </div>
-            <div className="navNarrow">
+            {/* <div className="navNarrow">
                 <i className="fa fa-bars fa-2x" onClick={this.burgerToggle}></i>
                 <div className="narrowLinks">
                     <a href="#">Link 1</a>
                     <a href="#">Link 2</a>
                     <a href="#">Link 3</a>
                 </div>
-            </div>
+            </div> */}
         </nav>
         )
     }
