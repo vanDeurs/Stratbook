@@ -1,9 +1,7 @@
-const express = require('express');
 const sqlite3 = require('sqlite3');
 
-// Add ID again
 const createStrategyTable = () => {
-    return `CREATE TABLE Strategies (
+    return `CREATE TABLE IF NOT EXISTS Strategies (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nameValue TEXT default NULL,
         mapValue TEXT default NULL,
@@ -13,14 +11,8 @@ const createStrategyTable = () => {
         created VARCHAR(255)
     );`;
 };
-
-const selectAllStrategies = () => {
-    return `SELECT * FROM Strategies;`;
-}
-
 module.exports = {
     createStrategyTable,
-    selectAllStrategies,
 };
 
 

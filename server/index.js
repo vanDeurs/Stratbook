@@ -3,6 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const sqlite3 = require('sqlite3');
+// Maybe use and require errorhandler (npm package)
 
 const {createStrategyTable} = require('../react-ui/api/sql');
 
@@ -24,6 +25,11 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, err => {
+  if (err) {
+    console.log('Failed to listen on PORT.');
+    console.log('Error: ', err);
+    return;
+  }
   console.error(`Listening on port ${PORT}`);
 });
