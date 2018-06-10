@@ -165,11 +165,9 @@ export class StrategyFormModal extends Component {
             return
         } else {
             console.log('validation: ', validation);
-            console.log('else has been reached')
             // So that DisplayStrategies.js can access formInfo which is passed in as a parameter.
             // Because DisplayStrategies needs the form info for the StrategyCards.
             this.props.onSubmit(formInfo);
-    
             // Clear form after submit
             this.clearForm();
         }
@@ -243,7 +241,6 @@ export class StrategyFormModal extends Component {
             </form>
         );
 
-        // Here we return the modal with the form in it
         return (
             <Modal 
                 isOpen={this.props.isOpen}

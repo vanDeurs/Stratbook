@@ -9,22 +9,13 @@ import { BrowserRouter, Route, HashRouter, Link, Switch } from 'react-router-dom
 import {Layout} from './components/Layout';
 import {NotFound} from './components/NotFound';
 import 'font-awesome/css/font-awesome.min.css';
-import 'bootstrap/dist/css/bootstrap.css';
 import { DisplayStrategies } from './containers/DisplayStrategies.js';
-// import 'bootstrap/dist/css/bootstrap-theme.min.css';
-
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
   render(){
     return(
-          <Layout>
             <BrowserRouter>
+              <Layout>
                 <Switch>
                     <Route exact path='/' component={Home}/>
                     <Route exact path='/:map' component={RenderMap}/>
@@ -32,12 +23,10 @@ class App extends Component {
                     <Route exact path='/:map/setups' component={RenderSetups}/>
                     <Route path='*' component={NotFound}/>
                 </Switch>
+              </Layout>
             </BrowserRouter>
-          </Layout>
     )
   }
 }
 
-// I included the BrowserRouter so that I could use NavLinks in the navigationbar. 
-// I couldn't find another solution.
-ReactDOM.render(<BrowserRouter><App /></BrowserRouter>, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));

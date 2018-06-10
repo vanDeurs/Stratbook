@@ -126,10 +126,11 @@ router.put('/:id', (req, res) => {
           {
             function(err) {
               if (err){
-                res.sendStatus(500);
+                res.sendStatus(400);
                 return console.log('error: ', err.message);
               }
-              db.get(`SELECT * FROM Strategies WHERE id = ${this.lastID}`, (err, updatedStrategy) => {
+              // Change this.lastID to req.params.id ?
+              db.get(`SELECT * FROM Strategies WHERE id = ${req.params.id}`, (err, updatedStrategy) => {
                 if (err || !updatedStrategy ) {
                   console.error('Couldnt access updated row');
                   console.log('Error: ', err);

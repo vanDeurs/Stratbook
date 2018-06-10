@@ -1,4 +1,4 @@
-import React, { Component }     from 'react';
+import React from 'react';
 
 // Images
 import miragehd         from '../images/hd/miragehd.jpg';
@@ -19,7 +19,7 @@ import { MapSetups } from '../containers/MapSetups';
 export const RenderSetups = ({location}) => {
     const pathName = location.pathname;
     let maps = ['train', 'cache', 'overpass', 'mirage', 'nuke', 'cobblestone', 'inferno', 'dust2'];
-    let mapImages = [trainhd, cachehd, overpasshd, miragehd, nukehd, cobblestonehd, infernohd, dust2hd];
+    // let mapImages = [trainhd, cachehd, overpasshd, miragehd, nukehd, cobblestonehd, infernohd, dust2hd];
 
     for(let i = 0; i < maps.length; i++ ){
         if (pathName === '/' + maps[i] + '/setups'){

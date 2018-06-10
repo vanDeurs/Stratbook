@@ -1,5 +1,4 @@
-import React, { Component }     from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import React from 'react';
 
 // Images
 import miragehd         from '../images/hd/miragehd.jpg';
@@ -11,17 +10,6 @@ import overpasshd       from '../images/hd/overpasshd.png';
 import cobblestonehd    from '../images/hd/cobblestonehd.jpg';
 import dust2hd          from '../images/hd/dust2hd.png';
 
-import index            from '../index';
-
-import {MiddlePicker}   from '../containers/MiddlePicker';
-
-
-import Home             from '../Home'
-
-
-import ReactDOM         from 'react-dom';
-import { Link }         from 'react-router-dom';
-import {App}            from '../index';
 import { DisplayStrategies } from '../containers/DisplayStrategies';
 
 
@@ -31,11 +19,10 @@ import { DisplayStrategies } from '../containers/DisplayStrategies';
 export const RenderStrategies = ({location}) => {
     const pathName = location.pathname;
     let maps = ['train', 'cache', 'overpass', 'mirage', 'nuke', 'cobblestone', 'inferno', 'dust2'];
-    let mapImages = [trainhd, cachehd, overpasshd, miragehd, nukehd, cobblestonehd, infernohd, dust2hd];
-    let site = ['A', 'B', 'middle']
+    // let mapImages = [trainhd, cachehd, overpasshd, miragehd, nukehd, cobblestonehd, infernohd, dust2hd];
 
     for(let i = 0; i < maps.length; i++ ){
-        if (pathName == '/' + maps[i] + '/strategies'){
+        if (pathName === '/' + maps[i] + '/strategies'){
             return (
                 <DisplayStrategies map={maps[i]}/>
             )

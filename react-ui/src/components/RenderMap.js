@@ -1,4 +1,4 @@
-import React, { Component }     from 'react';
+import React from 'react';
 
 // Images
 import miragehd         from '../images/hd/miragehd.jpg';
@@ -21,12 +21,12 @@ export const RenderMap = ({location}) => {
     let mapImages = [trainhd, cachehd, overpasshd, miragehd, nukehd, cobblestonehd, infernohd, dust2hd];
 
     for(let i = 0; i < maps.length; i++ ){
-        if (pathName == '/' + maps[i]){
+        if (pathName === '/' + maps[i]){
             return (
                 <MiddlePicker 
-                backgroundImage = {mapImages[i]}
-                linkStrategies={maps[i] + '/strategies'}
-                linkSetups={maps[i] + '/setups'}
+                    backgroundImage = {mapImages[i]}
+                    linkStrategies={maps[i] + '/strategies'}
+                    linkSetups={maps[i] + '/setups'}
                 />
             )
         }
