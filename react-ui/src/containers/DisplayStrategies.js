@@ -1,12 +1,10 @@
 import React, { Component }     from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
-import axois from 'axios';
+// import axois from 'axios';
 import '../styles/index.css';
-
+import {logError} from '../utils/Logger';
 import {MiddlePicker}   from '../containers/MiddlePicker';
 import {TopTable} from '../components/DisplayStrategiesComponents/TopTable';
-import ReactDOM         from 'react-dom';
-import { Link }         from 'react-router-dom';
+// import { Link }         from 'react-router-dom';
 import {App}            from '../index';
 import { StrategyCard } from '../components/DisplayStrategiesComponents/StrategyCard';
 import { error } from 'util';
@@ -25,6 +23,7 @@ export class DisplayStrategies extends Component {
             formInfo: null,
             createdDate: '',
             editStrategyModalVisible: false,
+            currentStrategyEditId: null,
 
             // Error messages
             mapErrorMessage: null,
@@ -41,7 +40,6 @@ export class DisplayStrategies extends Component {
         this.fetchStrategies();
     };
 
-
     //////////////////////////////////////////////////////////////////////
     ///////////////////////// C R U D STARTS HERE/////////////////////////
     //////////////////////////////////////////////////////////////////////
@@ -55,7 +53,7 @@ export class DisplayStrategies extends Component {
               this.setState({strategies, loading: false});
               console.log('strategies', this.state.strategies);
           }).catch(err => {
-              console.log('Err', err);
+              logError('DisplayStrategies - fetchStrategies', err);
               this.setState({ textDisplay: 'Sorry - something went wrong.' });
           });
       };
@@ -91,10 +89,11 @@ export class DisplayStrategies extends Component {
                         nameErrorMessage: err.message,
                     });
                 }).catch(err => {
-                    console.log(err.message);
+                    logError('DisplayStrategies - submitForm', err);
                 })
             }
         }).catch(err => {
+            logError('DisplayStrategies - submitForm', err);
             this.setState({
                 nameErrorMessage: 'Error in sending data to server:' + err.message,
             });
@@ -108,20 +107,26 @@ export class DisplayStrategies extends Component {
             method: 'DELETE',
             body: id
         })
-        .then(()=> {
-            this.fetchStrategies()
-        });
+            .then(res => {
+                this.fetchStrategies();
+                console.log('res: ', res);
+        }).catch(err => {
+            logError('deleteStrategy - submitForm', err);
+    });
     }
-    
-    
+
     editStrategy = (newDetails) => {
-        let strategyId = 20;
+        const strategyId = this.state.currentStrategyEditId;
         fetchWithErrorHandling(`/:map/strategies/${strategyId}`, {
             method: 'PUT',
             body: JSON.stringify(newDetails),
             headers: {'Content-Type': 'application/json'}
         })
-        .then(() => this.fetchStrategies())
+        .then(this.fetchStrategies())
+        .then(this.openOrCloseEditStrategyModal()
+    ).catch(err => {
+        logError('DisplayStrategies - editStrategy', err);
+    });
     }
     
     
@@ -151,7 +156,7 @@ export class DisplayStrategies extends Component {
             )
         }
         
-        console.log('strategiesxx', this.state.strategies);
+        // console.log('strategiesxx', this.state.strategies);
         return strategies.map(strategy => {
             const {formEditMode} = this.state;
             // If the strategy created date is the same as the current date
@@ -159,36 +164,26 @@ export class DisplayStrategies extends Component {
             if (strategy.created === today){
                 strategy.created = 'today'
             }
-            console.log('strategy', strategy);
+            // console.log('strategy', strategy);
             return (
                 <StrategyCard 
-                    mapName={strategy.mapValue} 
-                    strategyName={strategy.nameValue}  
-                    key={strategy.id}
-                    strategySummary={strategy.summaryValue}
-                    strategyExplanation={strategy.explanationValue}
-                    strategyId={strategy.id}
-                    strategyType={strategy.typeValue}
+                mapName={strategy.mapValue} 
+                strategyName={strategy.nameValue}  
+                key={strategy.id}
+                strategySummary={strategy.summaryValue}
+                strategyExplanation={strategy.explanationValue}
+                strategyId={strategy.id}
+                strategyType={strategy.typeValue}
                     strategyCreated={strategy.created}
                     
                     // Buttons
-                    editStrategyButton={this.openOrCloseEditStrategyModal}
+                    editStrategyButton={() => this.openOrCloseEditStrategyModal(strategy.id)}
                     deleteStrategyButton={() => this.deleteStrategy(strategy.id)}
                 />
             );
-        }
-    );
-};
+        });
+    };
 
-    openOrCloseEditStrategyModal = () => {
-        this.state.editStrategyModalVisible 
-        ? this.setState({
-            editStrategyModalVisible: false
-        })
-        : this.setState({
-            editStrategyModalVisible: true
-        })
-    }
 
     // Open Add Strategy Modal function
     openOrCloseAddStrategyModal = () => {
@@ -200,7 +195,18 @@ export class DisplayStrategies extends Component {
             addStrategyModalVisible: true
         })
     };
-    
+
+    openOrCloseEditStrategyModal = (strategyId) => {
+        console.log('Open before action: ', this.state.editStrategyModalVisible)
+        this.state.editStrategyModalVisible 
+        ? this.setState({
+            editStrategyModalVisible: false
+        })
+        : this.setState({
+            editStrategyModalVisible: true,
+            currentStrategyEditId: strategyId,
+        })
+    }
 
     // Modal for editing strategies
     editStrategyModal = () => {
@@ -209,7 +215,7 @@ export class DisplayStrategies extends Component {
                 isOpen={this.state.editStrategyModalVisible}
                 onEditSubmit={this.editStrategy}
                 onRequestClose={this.openOrCloseEditStrategyModal}
-                id={20}
+                strategyId={this.state.currentStrategyEditId}
             />
         )
     }
