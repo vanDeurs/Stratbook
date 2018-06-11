@@ -107,7 +107,7 @@ router.delete('/:id', (req, res) => {
       return res.sendStatus(500);
     } 
     console.log('Deleted strategy');
-    res.status(204).send(deletedStrategy);
+    res.sendStatus(204);
   });
 });
 

@@ -97,7 +97,6 @@ export class DisplayStrategies extends Component {
             this.setState({
                 nameErrorMessage: 'Error in sending data to server:' + err.message,
             });
-            // alert('Error in sending data to server: ' + err.message);
         });
     };      
     
@@ -107,10 +106,8 @@ export class DisplayStrategies extends Component {
             method: 'DELETE',
             body: id
         })
-            .then(res => {
-                this.fetchStrategies();
-                console.log('res: ', res);
-        }).catch(err => {
+        .then(this.fetchStrategies()
+        ).catch(err => {
             logError('deleteStrategy - submitForm', err);
     });
     }
