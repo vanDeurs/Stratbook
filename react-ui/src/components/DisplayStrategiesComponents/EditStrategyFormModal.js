@@ -139,7 +139,7 @@ export class EditStrategyFormModal extends Component {
     fetchStrategyDetails = (strategyId) => {
         console.log('prop id: ', this.props.strategyId)
         // const strategyId = this.props.strategyId;
-        fetchWithErrorHandling(`/:map/strategies/${strategyId}`)
+        fetchWithErrorHandling(`/:map/${strategyId}`)
           .then(res => res.json())
           .then(res => {
               this.setState({
@@ -192,6 +192,7 @@ export class EditStrategyFormModal extends Component {
                     <ControlLabel className="formHeader">Strategy Name</ControlLabel>
                     <FormControl
                         type="text"
+                        // required={true}
                         value={this.state.nameValue}
                         placeholder="Enter the strategy name"
                         onChange={this.handleNameChange}

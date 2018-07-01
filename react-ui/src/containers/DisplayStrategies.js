@@ -47,7 +47,7 @@ export class DisplayStrategies extends Component {
     // Here we use our custom error handler to fetch the data from the backend.
     // The data fetched is the strategies. (could be more in the future)
     fetchStrategies = () => {
-        fetchWithErrorHandling('/:map/strategies')
+        fetchWithErrorHandling('/:map')
           .then(res => res.json())
           .then(strategies => {
               this.setState({strategies, loading: false});
@@ -67,7 +67,7 @@ export class DisplayStrategies extends Component {
     submitForm = (dataFromForm) => {
         this.setState({formInfo: dataFromForm});
         // We fetch the data.
-        fetchWithErrorHandling('/:map/strategies', {
+        fetchWithErrorHandling('/:map', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dataFromForm)
@@ -102,7 +102,7 @@ export class DisplayStrategies extends Component {
     
     // DELETE STRATEGY CARD FUNCTION
     deleteStrategy = (id) => {
-        fetchWithErrorHandling(`/:map/strategies/${id}`, {
+        fetchWithErrorHandling(`/:map/${id}`, {
             method: 'DELETE',
             body: id
         })
@@ -114,7 +114,7 @@ export class DisplayStrategies extends Component {
 
     editStrategy = (newDetails) => {
         const strategyId = this.state.currentStrategyEditId;
-        fetchWithErrorHandling(`/:map/strategies/${strategyId}`, {
+        fetchWithErrorHandling(`/:map/${strategyId}`, {
             method: 'PUT',
             body: JSON.stringify(newDetails),
             headers: {'Content-Type': 'application/json'}

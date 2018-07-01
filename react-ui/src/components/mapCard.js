@@ -16,7 +16,7 @@ export class Mapcard extends Component {
                 className="cardContainer"
                 style={{backgroundImage: `url(${backgroundImage})`}}>
                 <div className="overlayContainer">
-                    <Link to={this.props.mapName} id="mapName">{this.props.mapName}</Link>
+                    <Link to={`${this.props.mapName}`} id="mapName">{this.props.mapName}</Link>
                 </div>
             </div>
         );
@@ -26,4 +26,4 @@ export class Mapcard extends Component {
 Mapcard.propTypes = {
     src: PropTypes.string.isRequired,
     mapName: PropTypes.string.isRequired,
-  };
+};

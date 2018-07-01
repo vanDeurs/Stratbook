@@ -2,14 +2,11 @@ import React, { Component }     from 'react';
 import ReactDOM                 from 'react-dom';
 import { Home }                 from './Home.js';
 import './styles/index.css';
-import { RenderMap }            from './components/RenderMap';
 import { RenderStrategies }     from './components/RenderStrategies';
-import { RenderSetups }         from './components/RenderSetups';
-import { BrowserRouter, Route, HashRouter, Link, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, HashRouter, Link, Switch, Redirect } from 'react-router-dom';
 import {Layout} from './components/Layout';
 import {NotFound} from './components/NotFound';
 import 'font-awesome/css/font-awesome.min.css';
-import { DisplayStrategies } from './containers/DisplayStrategies.js';
 
 class App extends Component {
   render(){
@@ -18,9 +15,7 @@ class App extends Component {
               <Layout>
                 <Switch>
                     <Route exact path='/' component={Home}/>
-                    <Route exact path='/:map' component={RenderMap}/>
-                    <Route exact path='/:map/strategies' component={RenderStrategies}/>
-                    <Route exact path='/:map/setups' component={RenderSetups}/>
+                    <Route exact path='/:map' component={RenderStrategies}/>
                     <Route path='*' component={NotFound}/>
                 </Switch>
               </Layout>

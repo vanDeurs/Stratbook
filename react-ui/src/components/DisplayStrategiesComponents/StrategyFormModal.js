@@ -4,6 +4,8 @@ import ReactDOM         from 'react-dom';
 import '../../styles/index.css';
 import Modal from 'react-modal';
 import { checkTextLength } from '../../utils/TextValidation';
+import PropTypes from 'prop-types';
+
 
 // For screen-readers
 Modal.setAppElement('#root')
@@ -180,6 +182,7 @@ export class StrategyFormModal extends Component {
                     <ControlLabel className="formHeader">Strategy Name</ControlLabel>
                     <FormControl
                         type="text"
+                        // required
                         value={this.state.nameValue}
                         placeholder="Enter the strategy name"
                         onChange={this.handleNameChange}
@@ -252,4 +255,16 @@ export class StrategyFormModal extends Component {
             </Modal>
         );
     };
+};
+
+StrategyFormModal.propTypes = {
+    onSubmit: PropTypes.func,
+    isOpen: PropTypes.bool,
+    onRequestClose: PropTypes.func
+};
+
+StrategyFormModal.defaultProps = {
+    onSubmit: () => null,
+    isOpen: false,
+    onRequestClose: () => null
 };
