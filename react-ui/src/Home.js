@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Mapcard } from './components/mapCard';
 import ReactDOM from 'react-dom';
-import {RenderMao} from './components/RenderMap'
 import './styles/App.css';
 // import '../styles/index.css';
 import App from './index';

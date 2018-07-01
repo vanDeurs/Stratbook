@@ -1,7 +1,7 @@
 import React, { Component }     from 'react';
-
 import ReactDOM         from 'react-dom';
 import {App}            from '../../index';
+import { Link }         from 'react-router-dom';
 import '../../styles/index.css';
 
 export class AddStrategyButton extends Component {

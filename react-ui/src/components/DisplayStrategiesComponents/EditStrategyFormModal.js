@@ -4,17 +4,16 @@ import ReactDOM         from 'react-dom';
 import '../../styles/index.css';
 import Modal from 'react-modal';
 import { checkTextLength } from '../../utils/TextValidation';
-import PropTypes from 'prop-types';
-
+import {fetchWithErrorHandling, handleErrors} from '../../utils/FetchErrorHandling';
+import {logError} from '../../utils/Logger';
 
 // For screen-readers
 Modal.setAppElement('#root')
 
-export class StrategyFormModal extends Component {
+export class EditStrategyFormModal extends Component {
     constructor(props){
         super(props);
         this.state = {
-            
             // Form values 
             mapValue: '',
             nameValue: '',
@@ -32,7 +31,9 @@ export class StrategyFormModal extends Component {
     };
 
     componentDidMount(){
+        console.log('Component did mount for editStrategyModal');
     };
+
 
     ////////////////////////////////////////////////////////////////
     // Validation
@@ -100,7 +101,7 @@ export class StrategyFormModal extends Component {
 
     ////////////////////////////////////////////////////////////////
     // Handle change functions
-    ///////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
 
     handleNameChange = (e) => {
         this.setState({
@@ -132,27 +133,38 @@ export class StrategyFormModal extends Component {
         });
     };
 
-    clearForm = () => {
-        console.log('form has been cleared')
-        this.setState({
-            nameValue: '',
-            mapValue: '',
-            typeValue: '',
-            summaryValue: '',
-            explanationValue: ''
-        })
-    }
+    ////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
 
-    ////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////
+    fetchStrategyDetails = (strategyId) => {
+        console.log('prop id: ', this.props.strategyId)
+        // const strategyId = this.props.strategyId;
+        fetchWithErrorHandling(`/:map/${strategyId}`)
+          .then(res => res.json())
+          .then(res => {
+              this.setState({
+                  mapValue: res.mapValue,
+                  nameValue: res.nameValue,
+                  typeValue: res.typeValue,
+                  summaryValue: res.summaryValue,
+                  explanationValue: res.explanationValue
+              });
+              console.log('map: ', this.state.mapValue);
+              console.log('name: ', this.state.nameValue);
+              console.log('type: ', this.state.typeValue);
+              console.log('summary: ', this.state.summaryValue);
+              console.log('explanation: ', this.state.explanationValue);
+          }).catch(err => {
+              logError('EditStrategyFormModal - fetchStrategyDetails', err);
+          });
+      };
 
     // Runs when the form below is submitted
     onSubmit = (e) => {
         console.log('Form has been submitted')
-        // Prevents page from reloading
         e.preventDefault();
         const {nameValue, mapValue, typeValue, summaryValue, explanationValue} = this.state;
-        const formInfo = {
+        const newFormInfo = {
             nameValue,
             mapValue,
             typeValue,
@@ -166,12 +178,10 @@ export class StrategyFormModal extends Component {
             console.log('formErr', validation)
             return
         } else {
-            console.log('validation: ', validation);
+            console.log('Validation: ', validation);
             // So that DisplayStrategies.js can access formInfo which is passed in as a parameter.
             // Because DisplayStrategies needs the form info for the StrategyCards.
-            this.props.onSubmit(formInfo);
-            // Clear form after submit
-            this.clearForm();
+            this.props.onEditSubmit(newFormInfo);
         }
     };
     
@@ -182,7 +192,7 @@ export class StrategyFormModal extends Component {
                     <ControlLabel className="formHeader">Strategy Name</ControlLabel>
                     <FormControl
                         type="text"
-                        // required
+                        // required={true}
                         value={this.state.nameValue}
                         placeholder="Enter the strategy name"
                         onChange={this.handleNameChange}
@@ -194,7 +204,7 @@ export class StrategyFormModal extends Component {
                 <FormGroup className="formGroup" controlId="formControlsSelect">
                     <ControlLabel className="formHeader">Map</ControlLabel>
                     <FormControl componentClass="select" placeholder="Select" onChange={this.handleMapChange}>
-                        <option value="select">Select Map</option>
+                        <option value="select">{this.state.mapValue || "Select map"}</option>
                         <option value="Mirage">Mirage</option>
                         <option value="Cache">Cache</option>
                         <option value="Dust2">Dust2</option>
@@ -210,9 +220,9 @@ export class StrategyFormModal extends Component {
                </FormGroup>
 
                 <FormGroup className="formGroup" controlId="formControlsSelectMultiple">
-                    <ControlLabel className="formHeader">Type</ControlLabel>
+                    <ControlLabel className="formHeader">Select Type</ControlLabel>
                     <FormControl componentClass="select" onChange={this.handleTypeChange}> {/* Make it a multi-pick in the future. Just add 'multiple' */}
-                        <option value="select">Select Type</option>
+                        <option value="select">{this.state.typeValue || "Select Type"}</option>
                         <option value="Fullbuy">Fullbuy</option>
                         <option value="Eco">Eco</option>
                         <option value="Halfbuy">Halfbuy</option>
@@ -240,31 +250,21 @@ export class StrategyFormModal extends Component {
                     </p>               
                     </FormGroup>
 
-                <Button type="submit">Submit</Button>
+                <Button type="submit">Edit and Submit</Button>
             </form>
         );
 
+        // Here we return the modal with the form in it
         return (
             <Modal 
                 isOpen={this.props.isOpen}
                 contentLabel="Minimal Modal Example"
                 onRequestClose={this.props.onRequestClose}
                 className="formModal"
+                onAfterOpen={() => this.fetchStrategyDetails(this.props.strategyId)}
             >
                 {form}
             </Modal>
         );
     };
-};
-
-StrategyFormModal.propTypes = {
-    onSubmit: PropTypes.func,
-    isOpen: PropTypes.bool,
-    onRequestClose: PropTypes.func
-};
-
-StrategyFormModal.defaultProps = {
-    onSubmit: () => null,
-    isOpen: false,
-    onRequestClose: () => null
 };

@@ -1,16 +1,16 @@
 import React, { Component }     from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
-import axois from 'axios';
+// import axois from 'axios';
 import '../styles/index.css';
-
+import {logError} from '../utils/Logger';
 import {MiddlePicker}   from '../containers/MiddlePicker';
 import {TopTable} from '../components/DisplayStrategiesComponents/TopTable';
-import ReactDOM         from 'react-dom';
-import { Link }         from 'react-router-dom';
+// import { Link }         from 'react-router-dom';
 import {App}            from '../index';
 import { StrategyCard } from '../components/DisplayStrategiesComponents/StrategyCard';
 import { error } from 'util';
 import { StrategyFormModal } from '../components/DisplayStrategiesComponents/StrategyFormModal';
+import { EditStrategyFormModal } from '../components/DisplayStrategiesComponents/EditStrategyFormModal';
+import {fetchWithErrorHandling, handleErrors } from '../utils/FetchErrorHandling';
 
 export class DisplayStrategies extends Component {
     constructor(props){
@@ -22,6 +22,8 @@ export class DisplayStrategies extends Component {
             addStrategyModalVisible: false,
             formInfo: null,
             createdDate: '',
+            editStrategyModalVisible: false,
+            currentStrategyEditId: null,
 
             // Error messages
             mapErrorMessage: null,
@@ -38,28 +40,20 @@ export class DisplayStrategies extends Component {
         this.fetchStrategies();
     };
 
-
-    // This handles errors
-    handleErrors = (response) => {
-      if (!response.ok) throw new Error(response.statusText);
-      return response;
-    };
-    
-    // This handles fetching errors
-    fetchWithErrorHandling = (input, init) => {
-      return fetch(input, init)
-        .then(this.handleErrors)
-    };
+    //////////////////////////////////////////////////////////////////////
+    ///////////////////////// C R U D STARTS HERE/////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
     // Here we use our custom error handler to fetch the data from the backend.
     // The data fetched is the strategies. (could be more in the future)
     fetchStrategies = () => {
-        this.fetchWithErrorHandling('/:map/strategies')
+        fetchWithErrorHandling('/:map')
           .then(res => res.json())
           .then(strategies => {
-              this.setState({ strategies, loading: false});
+              this.setState({strategies, loading: false});
+              console.log('strategies', this.state.strategies);
           }).catch(err => {
-              console.log('Err', err);
+              logError('DisplayStrategies - fetchStrategies', err);
               this.setState({ textDisplay: 'Sorry - something went wrong.' });
           });
       };
@@ -71,11 +65,9 @@ export class DisplayStrategies extends Component {
       // Here we use the createAPI to create a strategy. 
       // The body is the form info that we got from StrategyFormModal.
     submitForm = (dataFromForm) => {
-        // Store the pulled data in this.state.formInfo
         this.setState({formInfo: dataFromForm});
-
         // We fetch the data.
-        fetch('/:map/strategies', {
+        fetchWithErrorHandling('/:map', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dataFromForm)
@@ -83,14 +75,11 @@ export class DisplayStrategies extends Component {
         .then(res => {
             if (res.ok){
                 res.json()
-                .then(updatedStrategy => {
-                    // We make a variable that contains the current strategies stored in state plus the updatedStrategy.
-                    const newStrategies = this.state.strategies.concat(updatedStrategy);
-                    // We set the newStrategies to be the strategies.
+                .then(newStrategy => {
+                    const newStrategies = this.state.strategies.concat(newStrategy);
                     this.setState({ 
                         strategies: newStrategies,
                         addStrategyModalVisible: false,
-                        // Here we need to reset the state in the child StrategyFormModa with a callback.
                     })
                 })
             } else {
@@ -99,50 +88,61 @@ export class DisplayStrategies extends Component {
                     this.setState({
                         nameErrorMessage: err.message,
                     });
-                    // alert('Failed to add strategy: ' + err.message);
+                }).catch(err => {
+                    logError('DisplayStrategies - submitForm', err);
                 })
             }
         }).catch(err => {
+            logError('DisplayStrategies - submitForm', err);
             this.setState({
                 nameErrorMessage: 'Error in sending data to server:' + err.message,
             });
-            // alert('Error in sending data to server: ' + err.message);
         });
+    };      
+    
+    // DELETE STRATEGY CARD FUNCTION
+    deleteStrategy = (id) => {
+        fetchWithErrorHandling(`/:map/${id}`, {
+            method: 'DELETE',
+            body: id
+        })
+        .then(this.fetchStrategies()
+        ).catch(err => {
+            logError('deleteStrategy - submitForm', err);
+    });
+    }
 
-    };       
-
-    // decideDate = () => {
-    //     // Date stuff - so it matches the backend format
-    //     const dateObj = new Date();
-    //     const month = dateObj.getUTCMonth() + 1; // months from 1-12
-    //     const day = dateObj.getUTCDate();
-    //     const year = dateObj.getUTCFullYear();
-    //     const today = year + "/" + month + "/" + day;
-
-    //     console.log('date', this.state.strategies)
-    //     this.state.strategies.forEach(strategy => {
-    //         if(strategy.created === today){
-    //             strategy.created = "today"
-    //             console.log('Whohooo', strategy.created)
-    //         } else {
-    //             strategy.created = strategy.created
-    //         }
-    //     })
-    // }
-
-
+    editStrategy = (newDetails) => {
+        const strategyId = this.state.currentStrategyEditId;
+        fetchWithErrorHandling(`/:map/${strategyId}`, {
+            method: 'PUT',
+            body: JSON.stringify(newDetails),
+            headers: {'Content-Type': 'application/json'}
+        })
+        .then(this.fetchStrategies())
+        .then(this.openOrCloseEditStrategyModal()
+    ).catch(err => {
+        logError('DisplayStrategies - editStrategy', err);
+    });
+    }
+    
+    
+    //////////////////////////////////////////////////////////////////////
+    ///////////////////////// C R U D STOPS HERE /////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    
     // This function goes through the data that is stored in the state.
     // And then returns a card component for each strategy
     renderStrategyCards = () => {
-        const {strategies} = this.state
-
+        const {strategies} = this.state;
+        
         // Date stuff - move this to a separate function
         const dateObj = new Date();
         const month = dateObj.getUTCMonth() + 1; // months from 1-12
         const day = dateObj.getUTCDate();
         const year = dateObj.getUTCFullYear();
         const today = year + "/" + month + "/" + day;
-
+        
         // If there are no strategies - return some sad text
         if (strategies.length < 1){
             return (
@@ -152,73 +152,90 @@ export class DisplayStrategies extends Component {
                 </div>
             )
         }
-
+        
+        // console.log('strategiesxx', this.state.strategies);
         return strategies.map(strategy => {
+            const {formEditMode} = this.state;
             // If the strategy created date is the same as the current date
             // We set the created header to "today"
             if (strategy.created === today){
                 strategy.created = 'today'
             }
-            console.log('strategies: ', strategies)
-            console.log('strategy.created', strategy.created)
+            // console.log('strategy', strategy);
             return (
                 <StrategyCard 
-                    mapName={strategy.mapValue} 
-                    strategyName={strategy.nameValue}  
-                    // key={strategy.id} 
-                    key={strategy.id}
-                    strategySummary={strategy.summaryValue}
-                    strategyExplanation={strategy.explanationValue}
-                    strategyId={strategy.id}
-                    strategyType={strategy.typeValue}
+                mapName={strategy.mapValue} 
+                strategyName={strategy.nameValue}  
+                key={strategy.id}
+                strategySummary={strategy.summaryValue}
+                strategyExplanation={strategy.explanationValue}
+                strategyId={strategy.id}
+                strategyType={strategy.typeValue}
                     strategyCreated={strategy.created}
+                    
                     // Buttons
-                    editStrategyButton={()=>alert("Hello")}
+                    editStrategyButton={() => this.openOrCloseEditStrategyModal(strategy.id)}
+                    deleteStrategyButton={() => this.deleteStrategy(strategy.id)}
                 />
-                );
-            }
-        );
+            );
+        });
     };
 
-  // Modal for adding strategies
-  addStrategyModal = () => {
-      return (
-        <StrategyFormModal 
-            isOpen={this.state.addStrategyModalVisible}
-            onRequestClose={this.closeAddStrategyModal}
-            onSubmit={this.submitForm}
-            // Error messages
-            nameErrorMessage={this.state.nameErrorMessage}
-        />
-      )
-  };
 
-  // Open Add Strategy Modal function
-  openAddStrategyModal = () => {
-      this.setState({
-          addStrategyModalVisible: true
-      })
-  };
+    // Open Add Strategy Modal function
+    openOrCloseAddStrategyModal = () => {
+        this.state.addStrategyModalVisible 
+        ? this.setState({
+            addStrategyModalVisible: false
+        })
+        : this.setState({
+            addStrategyModalVisible: true
+        })
+    };
 
-  // Close Add Strategy Modal function
-  closeAddStrategyModal = () => {
-    this.setState({
-        addStrategyModalVisible: false
-    })
-};
+    openOrCloseEditStrategyModal = (strategyId) => {
+        console.log('Open before action: ', this.state.editStrategyModalVisible)
+        this.state.editStrategyModalVisible 
+        ? this.setState({
+            editStrategyModalVisible: false
+        })
+        : this.setState({
+            editStrategyModalVisible: true,
+            currentStrategyEditId: strategyId,
+        })
+    }
 
-  // Function that runs when we click the + button
-  addStrategyButton = () => {
-      this.openAddStrategyModal()
-  };
+    // Modal for editing strategies
+    editStrategyModal = () => {
+        return (
+            <EditStrategyFormModal 
+                isOpen={this.state.editStrategyModalVisible}
+                onEditSubmit={this.editStrategy}
+                onRequestClose={this.openOrCloseEditStrategyModal}
+                strategyId={this.state.currentStrategyEditId}
+            />
+        )
+    }
+
+    // Modal for adding strategies
+    addStrategyModal = () => {
+        return (
+            <StrategyFormModal 
+                isOpen={this.state.addStrategyModalVisible}
+                onRequestClose={this.openOrCloseAddStrategyModal}
+                onSubmit={this.submitForm}
+            />
+        )
+    };
 
     render(){
         return(
             <div className="strategiesContainer">
                 {this.addStrategyModal()}
+                {this.editStrategyModal()}
                 <div className="top">
                     <TopTable 
-                        addStrategyButton={this.addStrategyButton}
+                        addStrategyButton={this.openOrCloseAddStrategyModal}
                     />
                 </div>
                 <div className="bottom">

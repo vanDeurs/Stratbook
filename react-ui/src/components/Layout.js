@@ -7,7 +7,7 @@ export class Layout extends Component {
         return (
             <div style={{height: '100%'}}>
                 <Header/>
-                {this.props.children}
+                    {this.props.children}
                 <Footer />
             </div>
         )

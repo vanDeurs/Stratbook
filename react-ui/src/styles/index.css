@@ -73,7 +73,25 @@ Icons
 .editStrategyIcon:checked {
   color: #ffa801;
   background: none;
+}
 
+.deleteStrategyIcon {
+  color: #db1313;
+  height: 0%;
+  margin: 5px 5px 0 0;
+  background: none;
+}
+
+.deleteStrategyIcon:hover {
+  color: #4d0505;
+  background: none;
+  cursor: pointer;
+
+}
+
+.deleteStrategyIcon:checked {
+  color: #4d0505;
+  background: none;
 }
 
 
@@ -86,63 +104,10 @@ HEADER
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 */
 
-nav {
-  background-color: #00F;
-  overflow: hidden;
-  padding: 1em;
-  border-bottom: 1px solid #000;
-  height: 7vh;
-}
-nav a {
-  color: #FFF;
-}
-nav a:visited {
-  color: #FFF;
-}
-nav .navWide {
-  display: none;
-  margin: 0 auto;
-}
-nav .navWide .wideDiv {
-  text-align: center;
-}
-nav .navWide .wideDiv a {
-  text-decoration: none;
-  display: inline-block;
-  padding: 0 2em;
-}
-nav .navNarrow i {
-  float: left;
-  cursor: pointer;
-  color: #FFF;
-}
-nav .navNarrow .narrowLinks {
-  display: none;
-}
-nav .navNarrow .narrowLinks a {
-  text-decoration: none;
-  display: block;
-  float: left;
-  clear: left;
-  padding: 0.5em 0;
-}
-
-@media (min-width: 480px) {
-  nav .navWide {
-    display: block;
-  }
-  nav .navNarrow {
-    display: none;
-  }
-}
-
-.navContainer {
+.navWrapper {
   margin: 0;
   padding: 0;
   width: 100%;
-  /* position: absolute;
-  top: 0; */
-  /* min-width: 100vw; */
   height: 7vh;
   background: #ffa801;
   display: flex;
@@ -150,13 +115,27 @@ nav .navNarrow .narrowLinks a {
   align-items: center;
 }
 
-.navText {
-  font-size: 46px;
+.navContainer {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navLink {
+  font-size: 21px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #fff;
   line-height: 1.6;
   margin: 0;
   padding: 0;
+}
+
+.navLinkActive {
+  color: blue;
 }
 
 /* 
